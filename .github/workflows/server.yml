@@ -1,0 +1,38 @@
+name: Server workflow
+
+on:
+  push:
+    branches: ["master"]
+    paths:
+      - ".github/workflows/server.yml"
+      - "package.json"
+      - "server/**"
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Build
+        run: |
+          yarn install
+          cd server && yarn run build
+
+      - name: Move build file and create .env file
+        run: |
+          cp -f server/dist/index.js /var/www/webrtc-video-hangouts-api/
+          touch /var/www/webrtc-video-hangouts-api/.env
+          echo "${{ secrets.PROD_ENV_FILE }}" > .env
+
+      - run: pm2 restart BackendAPI

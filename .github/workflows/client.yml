@@ -1,14 +1,16 @@
-name: Client build workflow
+name: Client workflow
 
 on:
   push:
     branches: ["master"]
     paths:
+      - ".github/workflows/client.yml"
+      - "package.json"
       - "client/**"
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     strategy:
       matrix:
@@ -22,14 +24,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Build
-      run: |
-        npm install
-        npm run build
+      - name: Build
+        run: |
+          yarn install
+          cd client && yarn run build
 
-    - name: Deploy with gh-pages
-      run: |
-        git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-        npm run deploy -- -u "github-actions-bot <support+actions@github.com>"
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Deploy
+        run: cp -r client/dist/* /var/www/webrtc-video-hangouts-client/
