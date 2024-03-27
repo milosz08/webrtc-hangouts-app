@@ -16,18 +16,18 @@ jobs:
       matrix:
         node-version: [20.x]
 
-  steps:
-    - uses: actions/checkout@v3
+    steps:
+      - uses: actions/checkout@v3
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
 
-      - name: Build
-        run: |
-          yarn install
-          cd client && yarn run build
+        - name: Build
+          run: |
+            yarn install
+            cd client && yarn run build
 
-      - name: Deploy
-        run: cp -r client/dist/* /var/www/webrtc-video-hangouts-client/
+        - name: Deploy
+          run: cp -r client/dist/* /var/www/webrtc-video-hangouts-client/
