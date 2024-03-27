@@ -4,6 +4,6 @@
  * Created only for learning purposes.
  */
 
-const RootPage = () => <div>ROOT PAGE</div>;
+const RootPage = () => <div>ROOT</div>;
 
 export default RootPage;

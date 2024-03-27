@@ -4,6 +4,6 @@
  * Created only for learning purposes.
  */
 
-const NotFoundPage = () => <div>NOT FOUND PAGE</div>;
+const NotFoundPage = () => <div>NOT FOUND</div>;
 
 export default NotFoundPage;

@@ -20,7 +20,7 @@ ioServer.on('connection', () => {
 });
 
 expressServer.use('/api/v1/ping', (req, res) => {
-  return res.status(200).json({ message: 'PONG PONG' });
+  return res.status(200).json({ message: 'PONG' });
 });
 
 httpServer.listen(PORT, () => {
