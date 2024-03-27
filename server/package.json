@@ -1,0 +1,29 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development npx webpack --watch --progress",
+    "build": "cross-env NODE_ENV=production npx webpack --progress",
+    "lint": "npx eslint --ext js,cjs,mjs --report-unused-disable-directives --max-warnings 0"
+  },
+  "dependencies": {
+    "bufferutil": "^4.0.8",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.2",
+    "socket.io": "^4.7.5",
+    "utf-8-validate": "^6.0.3",
+    "winston": "^3.8.2"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "nodemon": "^2.0.20",
+    "nodemon-webpack-plugin": "^4.8.1",
+    "terser-webpack-plugin": "^5.3.9",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-node-externals": "^3.0.0",
+    "webpack-remove-empty-scripts": "^1.0.4"
+  }
+}

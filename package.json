@@ -1,0 +1,42 @@
+{
+  "name": "video-hangouts",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev:client": "cd client && yarn run dev",
+    "dev:server": "cd server && yarn run start",
+    "lint:client": "cd client && yarn run lint",
+    "lint:server": "cd server && yarn run lint",
+    "dev:all": "concurrently \"yarn run dev:client\" \"yarn run dev:server\"",
+    "husky:add-pre-commit": "npx husky add .husky/pre-commit \"npx --no-install lint-staged\"",
+    "configure:husky": "npx husky install && yarn run husky:add-pre-commit"
+  },
+  "lint-staged": {
+    "client/src/**/*.{js,cjs,mjs}": [
+      "yarn run lint:client"
+    ],
+    "server/src/**/*.{js,cjs,mjs}": [
+      "yarn run lint:server"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.2.0",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "husky": "^8.0.3",
+    "prettier": "^3.0.3",
+    "prettier-eslint": "^16.3.0",
+    "lint-staged": "^13.2.3"
+  }
+}

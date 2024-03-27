@@ -1,0 +1,52 @@
+{
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#4a3472",
+    "titleBar.activeBackground": "#4a3472",
+    "titleBar.inactiveBackground": "#4a3472"
+  },
+  "editor.detectIndentation": false,
+  "editor.formatOnSave": true,
+  "editor.renderWhitespace": "all",
+  "editor.rulers": [120],
+  "explorer.autoReveal": false,
+  "explorer.compactFolders": false,
+  "css.lint.unknownAtRules": "ignore", // ignore tailwind css preprocessor warnings
+  "files.insertFinalNewline": true,
+  "psi-header.config": {
+    "forceToTop": true,
+    "blankLinesAfter": 1
+  },
+  "psi-header.changes-tracking": {
+    "isActive": true,
+    "autoHeader": "autoSave",
+    "include": ["javascript", "javascriptreact", "css"],
+    "enforceHeader": true
+  },
+  "psi-header.lang-config": [
+    {
+      "language": "css",
+      "begin": "/*",
+      "prefix": " * ",
+      "end": " */",
+      "lineLength": 64,
+      "beforeHeader": []
+    },
+    {
+      "language": "*",
+      "begin": "/*",
+      "prefix": " * ",
+      "end": " */",
+      "lineLength": 64,
+      "beforeHeader": ["'use strict';"]
+    }
+  ],
+  "psi-header.templates": [
+    {
+      "language": "*",
+      "template": [
+        "Part of Silesian University of Technology project.",
+        "Created only for learning purposes."
+      ]
+    }
+  ]
+}
