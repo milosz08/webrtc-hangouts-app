@@ -24,10 +24,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-        - name: Build
-          run: |
-            yarn install
-            cd client && yarn run build
+      - name: Build
+        run: |
+          yarn install
+          cd client && yarn run build
 
-        - name: Deploy
-          run: cp -r client/dist/* /var/www/webrtc-video-hangouts-client/
+      - name: Deploy
+        run: cp -r client/dist/* /var/www/webrtc-video-hangouts-client/
