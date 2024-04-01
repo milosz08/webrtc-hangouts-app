@@ -10,6 +10,8 @@
     "preview": "npx vite preview --port 6061"
   },
   "dependencies": {
+    "flowbite": "^2.3.0",
+    "flowbite-react": "^0.7.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router": "^6.22.3",
