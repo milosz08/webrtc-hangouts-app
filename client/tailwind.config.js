@@ -17,4 +17,5 @@ export default {
     extend: {},
   },
   plugins: [flowbite],
+  darkMode: 'class',
 };

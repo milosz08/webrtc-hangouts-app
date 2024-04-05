@@ -6,12 +6,16 @@
  */
 import { useState } from 'react';
 import { Alert } from 'flowbite-react';
+import DarkModeToggleButton from '../components/DarkModeToggleButton';
 
 const RootPage = () => {
   const [modalVisibility, setmodalVisibility] = useState(true);
 
   return (
-    <div>
+    <div className="bg-white dark:bg-gray-700 h-screen">
+      <div className="p-2">
+        <DarkModeToggleButton />
+      </div>
       {modalVisibility && (
         <Alert
           color="success"
