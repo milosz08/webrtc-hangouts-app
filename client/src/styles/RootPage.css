@@ -1,0 +1,13 @@
+/*
+ * Part of Silesian University of Technology project.
+ * Created only for learning purposes.
+ */
+
+.dark .animated-background {
+  background: linear-gradient(270deg, #1f194a, #2c3e50);
+  background-size: 200% 200%;
+}
+
+.animated-background {
+  background: linear-gradient(270deg, #dedfdf, #b2e5f8);
+}
