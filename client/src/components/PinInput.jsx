@@ -16,7 +16,9 @@ const PinInput = () => {
 
   const updatePin = (newPin, i) => {
     setPin(newPin);
-    if (i < 7) refs[i + 1].current.focus();
+    if (i < 7) {
+      refs[i + 1].current.focus();
+    }
     setIsValid(
       newPin.join('') === correctPin ? true : newPin.includes('') ? null : false
     );
@@ -47,7 +49,9 @@ const PinInput = () => {
     e.preventDefault();
     const newPin = [...e.clipboardData.getData('text').slice(0, 8)];
     while (newPin.length < 8) newPin.push('');
-    updatePin(newPin, newPin.length - 1);
+    {
+      updatePin(newPin, newPin.length - 1);
+    }
   };
 
   useEffect(() => refs[0].current.focus(), []);

@@ -3,24 +3,11 @@
  * Created only for learning purposes.
  */
 
- .dark .animated-background {
+.dark .animated-background {
   background: linear-gradient(270deg, #1f194a, #2c3e50);
   background-size: 200% 200%;
-  animation: gradient 15s ease infinite;
 }
 
- .animated-background {
-  background: linear-gradient(270deg, #dedfdf, #c8eefc);
-}
-
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+.animated-background {
+  background: linear-gradient(270deg, #dedfdf, #b2e5f8);
 }

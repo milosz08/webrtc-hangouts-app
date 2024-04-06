@@ -5,7 +5,6 @@
  * Created only for learning purposes.
  */
 import { useEffect, useRef, useState } from 'react';
-import '../styles/Navbar.css';
 import CustomButton from './CustomButton';
 import DarkModeToggleButton from './DarkModeToggleButton';
 import NicknameDropdown from './NicknameDropdown';
@@ -63,7 +62,8 @@ const Navbar = () => {
           <div className="flex justify-center sm:justify-end items-center h-full w-full">
             <div className="relative inline-block text-left" ref={dropdownRef}>
               <span
-                className="text-gray-600 dark:text-white cursor-pointer tracking-wide"
+                className="relative text-gray-600 dark:text-white cursor-pointer tracking-wide
+                after:absolute after:bg-gray-700 after:h-[3px] after:w-0 after:left-0 after:bottom-[-5px] after:transition-[0.3s] dark:after:bg-white hover:after:w-full"
                 onClick={toggleDropdown}>
                 {nickname}
               </span>
