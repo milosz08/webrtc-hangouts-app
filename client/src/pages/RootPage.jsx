@@ -4,26 +4,18 @@
  * Part of Silesian University of Technology project.
  * Created only for learning purposes.
  */
-import { useState } from 'react';
-import { Alert } from 'flowbite-react';
-import DarkModeToggleButton from '../components/DarkModeToggleButton';
+import PinInput from '../components/PinInput';
+import '../styles/RootPage.css';
 
 const RootPage = () => {
-  const [modalVisibility, setmodalVisibility] = useState(true);
-
   return (
-    <div className="bg-white dark:bg-gray-700 h-screen">
-      <div className="p-2">
-        <DarkModeToggleButton />
+    <div className="animated-background h-screen">
+      <div className="pt-10 space-y-8">
+        <h1 className="flex flex-wrap justify-center text-gray-600 dark:text-white text-2xl text-center">
+          Enter pin to join meeting
+        </h1>
+        <PinInput />
       </div>
-      {modalVisibility && (
-        <Alert
-          color="success"
-          onDismiss={() => setmodalVisibility(prevState => !prevState)}>
-          <span className="font-medium">Info alert!</span> Change a few things
-          up and try submitting again.
-        </Alert>
-      )}
     </div>
   );
 };
