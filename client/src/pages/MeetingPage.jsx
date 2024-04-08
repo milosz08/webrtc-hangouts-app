@@ -55,7 +55,7 @@ const MeetingPage = () => {
     return () => {
       window.removeEventListener('resize', updateVisibleCameras);
     };
-  }, [isChatOpen]);
+  }, []);
 
   const onDragStart = (e, index) => {
     e.dataTransfer.setData('cameraIndex', index);
