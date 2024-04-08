@@ -38,6 +38,6 @@ export default {
       width: ['group-hover'],
     },
   },
-  plugins: [flowbite],
+  plugins: [flowbite, require('tailwind-scrollbar')],
   darkMode: 'class',
 };

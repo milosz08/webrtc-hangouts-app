@@ -12,6 +12,7 @@ import NicknameDropdown from './NicknameDropdown';
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const isMeetingPage = location.pathname === '/meeting';
   const [nickname, setNickname] = useState(() => {
     const storedNickname = localStorage.getItem('nickname');
     if (
@@ -56,7 +57,7 @@ const Navbar = () => {
       <div className="max-w-screen-xl gap-3 p-3 sm:p-4 grid grid-cols-4 sm:grid-cols-3 mx-auto">
         <DarkModeToggleButton />
         <div className="col-span-3 sm:col-span-1 flex justify-center">
-          <CustomButton text="Create meeting" />
+          {!isMeetingPage ? <CustomButton text="Create meeting" /> : null}
         </div>
         <div className="relative sm:inline-block text-left col-span-4 sm:col-span-1 w-full items-center justify-center flex">
           <div className="flex justify-center sm:justify-end items-center h-full w-full">
