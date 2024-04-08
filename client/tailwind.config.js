@@ -5,6 +5,7 @@
  * Created only for learning purposes.
  */
 import flowbite from 'flowbite/plugin';
+import tailwindScrollbar from 'tailwind-scrollbar';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -38,6 +39,6 @@ export default {
       width: ['group-hover'],
     },
   },
-  plugins: [flowbite, require('tailwind-scrollbar')],
+  plugins: [flowbite, tailwindScrollbar],
   darkMode: 'class',
 };
