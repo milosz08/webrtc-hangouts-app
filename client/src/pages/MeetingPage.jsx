@@ -10,6 +10,7 @@ import CameraWindow from '../components/CameraWindow';
 const MeetingPage = () => {
   const [cameras, setCameras] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9]);
   const [visibleCameras, setVisibleCameras] = useState(1);
+  const [highlightedIndex, setHighlightedIndex] = useState(null);
 
   const updateVisibleCameras = () => {
     if (window.innerWidth < 768) {
@@ -21,14 +22,6 @@ const MeetingPage = () => {
     }
   };
 
-  const handleClick = camera => {
-    setCameras(prevCameras => {
-      const newCameras = prevCameras.filter(cam => cam !== camera);
-      newCameras.unshift(camera);
-      return newCameras;
-    });
-  };
-
   useEffect(() => {
     window.addEventListener('resize', updateVisibleCameras);
     updateVisibleCameras();
@@ -37,12 +30,14 @@ const MeetingPage = () => {
       window.removeEventListener('resize', updateVisibleCameras);
     };
   }, []);
+
   const onDragStart = (e, index) => {
     e.dataTransfer.setData('cameraIndex', index);
   };
 
-  const onDragOver = e => {
+  const onDragOver = (e, index) => {
     e.preventDefault();
+    setHighlightedIndex(index);
   };
 
   const onDrop = (e, index) => {
@@ -52,19 +47,26 @@ const MeetingPage = () => {
     newCameras[draggedCameraIndex] = newCameras[index];
     newCameras[index] = temp;
     setCameras(newCameras);
+    setHighlightedIndex(null);
   };
 
   return (
-    <div className="bg-[#dedfdf] dark:bg-[#1f194a] h-screen">
+    <div className="bg-[#dedfdf] dark:bg-[#1f194a] h-full pb-4 flex flex-col flex-grow">
       <div className="flex justify-around overflow-x-auto p-2 scrollbar scrollbar-thumb-purple-400 scrollbar-track-blue-200 dark:scrollbar-thumb-purple-800 dark:scrollbar-track-blue-400 scrollbar-thumb-rounded-full scrollbar-track-rounded-full shadow-inner">
         <div className="inline-flex">
-          {cameras.slice(visibleCameras).map(camera => (
+          {cameras.slice(visibleCameras).map((camera, index) => (
             <div className="w-40 flex-shrink-0 px-1" key={camera}>
-              <CameraWindow
-                camera={camera}
-                onClick={() => handleClick(camera)}
-                isSwitch={true}
-              />
+              <div
+                draggable
+                onDragStart={e => onDragStart(e, index + visibleCameras)}
+                onDragOver={e => onDragOver(e, index + visibleCameras)}
+                onDrop={e => onDrop(e, index + visibleCameras)}
+                key={camera}>
+                <CameraWindow
+                  camera={camera}
+                  isHighlighted={index + visibleCameras === highlightedIndex}
+                />
+              </div>
             </div>
           ))}
         </div>
@@ -76,10 +78,13 @@ const MeetingPage = () => {
           <div
             draggable
             onDragStart={e => onDragStart(e, index)}
-            onDragOver={e => onDragOver(e)}
+            onDragOver={e => onDragOver(e, index)}
             onDrop={e => onDrop(e, index)}
             key={camera}>
-            <CameraWindow camera={camera} />
+            <CameraWindow
+              camera={camera}
+              isHighlighted={index === highlightedIndex}
+            />
           </div>
         ))}
       </div>

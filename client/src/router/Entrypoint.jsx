@@ -15,7 +15,7 @@ const Entrypoint = () => (
   <React.StrictMode>
     <Suspense fallback={<SuspenseLoader />}>
       <BrowserRouter>
-        <div className="flex flex-col h-screen">
+        <div className="flex-col flex min-h-screen">
           <Navbar />
           {/* Define here shared content upper outlet, ex header */}
           <AppRouter />
