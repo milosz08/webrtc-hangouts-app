@@ -52,8 +52,8 @@ const Navbar = () => {
 
   return (
     <nav
-      className="bg-gradient-to-r from-[#BFDCE6] via-[#C6C1D6] to-[#BFDCE6] dark:from-[#0D2238] dark:via-[#382a54] 
-                dark:to-[#0D2238] border-b-2 border-[#C6C1D6] dark:border-[#222e3b]">
+      className="bg-gradient-to-r from-custom-blue via-custom-purple to-custom-blue dark:from-dark-blue dark:via-dark-purple-nav 
+                dark:to-dark-blue border-b-2 border-border-color dark:border-dark-border">
       <div className="max-w-screen-xl gap-3 p-3 sm:p-4 grid grid-cols-4 sm:grid-cols-3 mx-auto">
         <DarkModeToggleButton />
         <div className="col-span-3 sm:col-span-1 flex justify-center">

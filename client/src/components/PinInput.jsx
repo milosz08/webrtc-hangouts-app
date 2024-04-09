@@ -5,6 +5,7 @@
  * Created only for learning purposes.
  */
 import { createRef, useEffect, useState } from 'react';
+import clsx from 'clsx';
 
 const PinInput = () => {
   const correctPin = '12345678';
@@ -62,7 +63,14 @@ const PinInput = () => {
         <input
           key={i}
           type="text"
-          className={`w-12 text-center text-2xl rounded-xl border-xl border-blue-400 ${isValid === null ? 'dark:bg-[#3f315c]' : isValid ? 'bg-green-400' : 'animate-shake bg-red-400'} dark:border-white dark:text-white text-black`}
+          className={clsx(
+            'w-12 text-center text-2xl rounded-xl border-xl border-blue-400 dark:border-white dark:text-white text-black',
+            {
+              'dark:bg-dark-pininput': isValid === null,
+              'bg-green-400': isValid,
+              'animate-shake bg-red-400': isValid === false,
+            }
+          )}
           maxLength="1"
           ref={refs[i]}
           value={digit}

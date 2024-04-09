@@ -14,7 +14,7 @@ const NicknameDropdown = ({ nickname, handleSave }) => {
   };
 
   return (
-    <div className="origin-top-right absolute sm:right-0 right-6 transform translate-x-1/2 sm:translate-x-1 mt-2 w-56 rounded-md shadow-lg bg-gray-200 dark:bg-[#293847] ring-1 ring-black ring-opacity-5 z-30">
+    <div className="origin-top-right absolute sm:right-0 right-6 transform translate-x-1/2 sm:translate-x-1 mt-2 w-56 rounded-md shadow-lg bg-gray-200 dark:bg-dark-dropdown ring-1 ring-black ring-opacity-5 z-30">
       <div className="p-2">
         <label
           htmlFor="default-input"
@@ -27,7 +27,7 @@ const NicknameDropdown = ({ nickname, handleSave }) => {
           defaultValue={nickname}
           maxLength={30}
           onKeyDown={handleKeyDown}
-          className="bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-[#1A314E] dark:border-white border-xl border-blue-400 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-dark-textarea dark:border-white border-xl border-blue-400 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         />
         <div className="my-2">
           <button

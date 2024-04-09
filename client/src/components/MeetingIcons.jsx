@@ -18,11 +18,11 @@ const MeetingIcons = () => {
   const [camOn, setCamOn] = useState(true);
 
   const toggleMic = () => {
-    setMicOn(!micOn);
+    setMicOn(prevState => !prevState);
   };
 
   const toggleCam = () => {
-    setCamOn(!camOn);
+    setCamOn(prevState => !prevState);
   };
 
   return (
