@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "dev:client": "cd client && yarn run dev",
-    "dev:server": "cd server && yarn run start",
+    "dev:server": "cd server && yarn run dev",
     "lint:client": "cd client && yarn run lint",
     "lint:server": "cd server && yarn run lint",
     "dev:all": "concurrently \"yarn run dev:client\" \"yarn run dev:server\"",

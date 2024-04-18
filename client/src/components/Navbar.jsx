@@ -26,7 +26,7 @@ const Navbar = () => {
   });
 
   const toggleDropdown = () => {
-    setIsOpen(!isOpen);
+    setIsOpen(prev => !prev);
   };
 
   useEffect(() => {
@@ -47,6 +47,7 @@ const Navbar = () => {
     if (inputValue.length > 0) {
       setNickname(inputValue);
       localStorage.setItem('nickname', inputValue);
+      setIsOpen(false);
     }
   };
 
