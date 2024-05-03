@@ -28,7 +28,7 @@ const CameraWindow = ({ children, camera, isHighlighted }) => (
 );
 
 CameraWindow.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   camera: PropTypes.number.isRequired,
   onClick: PropTypes.func,
   isSwitch: PropTypes.bool,
