@@ -68,7 +68,7 @@ const MeetingPage = () => {
   };
 
   return (
-    <div className="bg-custom-meeting dark:bg-dark-meeting h-full flex-grow flex flex-col md:flex-row">
+    <div className="bg-custom-meeting dark:bg-dark-meeting h-full flex-grow flex flex-col md:flex-row overflow-hidden">
       <div
         className={clsx('pb-2 w-full transition-all duration-700 ease-in-out', {
           'md:w-2/3 xl:w-3/4': isChatOpen,
@@ -82,7 +82,6 @@ const MeetingPage = () => {
               {isChatOpen ? <FaChevronRight /> : <FaChevronLeft />}
             </button>
           ) : null}
-
           <div
             id="content"
             className="flex justify-around overflow-x-auto p-2 scrollbar scrollbar-thumb-purple-400 scrollbar-track-blue-200 dark:scrollbar-thumb-purple-800 dark:scrollbar-track-blue-400 scrollbar-thumb-rounded-full scrollbar-track-rounded-full shadow-inner">
@@ -106,15 +105,10 @@ const MeetingPage = () => {
               ))}
             </div>
           </div>
-
           <div
             id="content"
             className={clsx(
-              {
-                'px-8 sm:px-32 md:px-4': isChatOpen,
-                'xl:px-20  sm:px-12': !isChatOpen,
-              },
-              'md:pt-2 pt-10 px-2 grid gap-2',
+              'md:pt-2 pt-10 px-2 grid gap-2 xl:px-20  sm:px-12',
               {
                 'grid-cols-2': visibleCameras === 4,
                 'grid-cols-3': visibleCameras === 6,
