@@ -4,22 +4,29 @@
  * Part of Silesian University of Technology project.
  * Created only for learning purposes.
  */
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import clsx from 'clsx';
+import { useSnackbar } from 'notistack';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { useNavigate } from 'react-router';
 import CameraWindow from '../components/CameraWindow';
 import Chat from '../components/Chat';
 import MeetingIcons from '../components/MeetingIcons';
+import { useAppContext } from '../context/AppContextProvider';
+import { useSocket } from '../context/SocketProvider';
 
 const MeetingPage = () => {
-  const [cameras, setCameras] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+  const [cameras, setCameras] = useState([]);
   const [visibleCameras, setVisibleCameras] = useState(1);
   const [highlightedIndex, setHighlightedIndex] = useState(null);
   const [isChatOpen, setChatOpen] = useState(false);
+  const socket = useSocket();
+  const { state } = useAppContext();
+  const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
 
   const updateVisibleCameras = () => {
     let visibleCameras;
-
     if (window.innerWidth < 768) {
       visibleCameras = 1;
     } else if (window.innerWidth >= 768 && window.innerWidth < 906) {
@@ -31,7 +38,6 @@ const MeetingPage = () => {
     } else {
       visibleCameras = 6;
     }
-
     setVisibleCameras(visibleCameras);
   };
 
@@ -67,6 +73,51 @@ const MeetingPage = () => {
     setChatOpen(prevState => !prevState);
   };
 
+  const onSnackbarMessageAction = useCallback(
+    ({ message }) => {
+      enqueueSnackbar(message);
+    },
+    [enqueueSnackbar]
+  );
+
+  const getRoomParticipants = useCallback(({ host, participants }) => {
+    const cameras = participants.map(({ nickname, socketId }) => ({
+      nickname,
+      isHost: host.socketId === socketId,
+    }));
+    setCameras(cameras);
+  }, []);
+
+  const onDeleteRoom = useCallback(
+    ({ message }) => {
+      enqueueSnackbar(message);
+      navigate('/');
+    },
+    [enqueueSnackbar, navigate]
+  );
+
+  useEffect(() => {
+    socket.emit('room:participants', {
+      roomKey: state.roomKey,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    socket.on('room:participant-joined', onSnackbarMessageAction);
+    socket.on('room:participant-leaved', onSnackbarMessageAction);
+    socket.on('room:participants', getRoomParticipants);
+    socket.on('room:reasigned-host', onSnackbarMessageAction);
+    socket.on('room:deleted', onDeleteRoom);
+    return () => {
+      socket.off('room:participant-joined', onSnackbarMessageAction);
+      socket.off('room:participant-leaved', onSnackbarMessageAction);
+      socket.off('room:participants', getRoomParticipants);
+      socket.off('room:reasigned-host', onSnackbarMessageAction);
+      socket.off('room:deleted', onDeleteRoom);
+    };
+  }, [socket, onSnackbarMessageAction, getRoomParticipants, onDeleteRoom]);
+
   return (
     <div className="bg-custom-meeting dark:bg-dark-meeting h-full flex-grow flex flex-col md:flex-row overflow-hidden">
       <div
@@ -93,9 +144,10 @@ const MeetingPage = () => {
                     onDragStart={e => onDragStart(e, index + visibleCameras)}
                     onDragOver={e => onDragOver(e, index + visibleCameras)}
                     onDrop={e => onDrop(e, index + visibleCameras)}
-                    key={camera}>
+                    key={camera.nickname}>
                     <CameraWindow
-                      camera={camera}
+                      nickname={camera.nickname}
+                      isHost={camera.isHost}
                       isHighlighted={
                         index + visibleCameras === highlightedIndex
                       }
@@ -120,9 +172,10 @@ const MeetingPage = () => {
                 onDragStart={e => onDragStart(e, index)}
                 onDragOver={e => onDragOver(e, index)}
                 onDrop={e => onDrop(e, index)}
-                key={camera}>
+                key={camera.nickname}>
                 <CameraWindow
-                  camera={camera}
+                  nickname={camera.nickname}
+                  isHost={camera.isHost}
                   isHighlighted={index === highlightedIndex}
                 />
               </div>

@@ -5,8 +5,12 @@
  * Created only for learning purposes.
  */
 import PropTypes from 'prop-types';
+import { useAppContext } from '../context/AppContextProvider';
+import CustomButton from './CustomButton';
 
-const NicknameDropdown = ({ nickname, handleSave }) => {
+const NicknameDropdown = ({ nicknameInput, handleSave }) => {
+  const { state } = useAppContext();
+
   const handleKeyDown = event => {
     if (event.key === 'Enter') {
       handleSave();
@@ -14,7 +18,9 @@ const NicknameDropdown = ({ nickname, handleSave }) => {
   };
 
   return (
-    <div className="origin-top-right absolute sm:right-0 right-6 transform translate-x-1/2 sm:translate-x-1 mt-2 w-56 rounded-md shadow-lg bg-gray-200 dark:bg-dark-dropdown ring-1 ring-black ring-opacity-5 z-30">
+    <div
+      className="absolute right-0 transform mt-2 w-56 rounded-md shadow-lg bg-gray-200 dark:bg-dark-dropdown
+      ring-1 ring-black ring-opacity-5 z-30">
       <div className="p-2">
         <label
           htmlFor="default-input"
@@ -23,19 +29,18 @@ const NicknameDropdown = ({ nickname, handleSave }) => {
         </label>
         <input
           type="text"
-          id="default-input"
-          defaultValue={nickname}
+          ref={nicknameInput}
+          defaultValue={state.nickname}
           maxLength={30}
           onKeyDown={handleKeyDown}
-          className="bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-dark-textarea dark:border-white border-xl border-blue-400 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full
+          p-2.5 dark:bg-dark-textarea dark:border-white border-xl border-blue-400 dark:placeholder-gray-400 dark:text-white
+          dark:focus:ring-blue-500 dark:focus:border-blue-500"
         />
         <div className="my-2">
-          <button
-            type="submit"
-            onClick={handleSave}
-            className="w-full text-white bg-gradient-to-br from-purple-500 to-blue-400 dark:from-purple-800 dark:to-blue-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:from-purple-600 hover:to-blue-500 dark:hover:from-purple-900 dark:hover:to-blue-500 active:from-purple-700 active:to-blue-600 dark:active:from-purple-1000 dark:active:to-blue-600">
+          <CustomButton type="submit" onClick={handleSave}>
             Save
-          </button>
+          </CustomButton>
         </div>
       </div>
     </div>
@@ -43,7 +48,7 @@ const NicknameDropdown = ({ nickname, handleSave }) => {
 };
 
 NicknameDropdown.propTypes = {
-  nickname: PropTypes.string.isRequired,
+  nicknameInput: PropTypes.any.isRequired,
   handleSave: PropTypes.func.isRequired,
 };
 

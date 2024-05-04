@@ -17,8 +17,11 @@
     <link rel="apple-touch-icon" sizes="384x384" href="pwa/icon-384x384.png" />
     <link rel="apple-touch-icon" sizes="512x512" href="pwa/icon-512x512.png" />
     <link rel="manifest" href="manifest.json" />
+    <script type="text/javascript">
+      window.reactEnvClient = {};
+      window.reactEnvClient.serverUrl = '%VITE_SERVER_URL%';
+    </script>
   </head>
-
   <body>
     <!-- start disable script section -->
     <noscript>
