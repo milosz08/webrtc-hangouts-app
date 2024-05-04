@@ -15,7 +15,10 @@ export const useSocket = () => {
 };
 
 const SocketProvider = ({ children }) => {
-  const socket = useMemo(() => io(window.reactEnvClient.serverUrl), []);
+  const socket = useMemo(
+    () => io(window.reactEnvClient.serverUrl, { transports: ['websocket'] }),
+    []
+  );
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
   );
