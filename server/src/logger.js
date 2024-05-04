@@ -10,7 +10,7 @@ const { format, transports } = winston;
 const LOGS_PATH = 'logs';
 
 module.exports = winston.createLogger({
-  level: process.env.NODE_ENV === 'development' ? 'debug' : 'warn',
+  level: process.env.NODE_ENV === 'development' ? 'debug' : 'info',
   levels: {
     error: 0,
     warn: 1,
