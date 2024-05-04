@@ -33,6 +33,6 @@ jobs:
         run: |
           cp -f server/dist/index.js /var/www/webrtc-video-hangouts-api/
           touch /var/www/webrtc-video-hangouts-api/.env
-          echo "${{ secrets.PROD_ENV_FILE }}" > .env
+          echo "${{ secrets.PROD_ENV_FILE }}" > /var/www/webrtc-video-hangouts-api/.env
 
       - run: pm2 restart BackendAPI
