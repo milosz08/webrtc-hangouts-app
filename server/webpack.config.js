@@ -41,9 +41,7 @@ module.exports = {
     {
       plugin: new DefinePlugin({
         'process.env.SERVER_PORT': JSON.stringify(process.env.NODE_PORT || 80),
-        'process.env.CLIENT_URL': JSON.stringify(
-          process.env[`CLIENT_${isProduction() ? 'PROD' : 'DEV'}_URL`]
-        ),
+        'process.env.CLIENT_URL': JSON.stringify(process.env.CLIENT_URL),
       }),
     },
   ]
