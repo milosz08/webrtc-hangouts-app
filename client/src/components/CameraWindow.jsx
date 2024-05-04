@@ -6,8 +6,9 @@
  */
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
+import { LuCrown } from 'react-icons/lu';
 
-const CameraWindow = ({ children, camera, isHighlighted }) => (
+const CameraWindow = ({ children, nickname, isHost, isHighlighted }) => (
   <div
     className={clsx('relative w-full pb-[56.25%]', {
       'border-xl border-red-700 dark:border-red-400': isHighlighted,
@@ -20,7 +21,8 @@ const CameraWindow = ({ children, camera, isHighlighted }) => (
           !isHighlighted,
       })}>
       <div className="h-full inset-0 flex items-center justify-center text-2xl">
-        Cam {camera}
+        {nickname}
+        {isHost ? <LuCrown color="orange" className="ms-2" size={25} /> : null}
       </div>
       {children}
     </div>
@@ -29,7 +31,8 @@ const CameraWindow = ({ children, camera, isHighlighted }) => (
 
 CameraWindow.propTypes = {
   children: PropTypes.node,
-  camera: PropTypes.number.isRequired,
+  nickname: PropTypes.string.isRequired,
+  isHost: PropTypes.bool.isRequired,
   onClick: PropTypes.func,
   isSwitch: PropTypes.bool,
   isHighlighted: PropTypes.bool,

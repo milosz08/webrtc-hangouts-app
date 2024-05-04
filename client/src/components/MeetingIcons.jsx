@@ -12,10 +12,16 @@ import {
   FaVideo,
   FaVideoSlash,
 } from 'react-icons/fa';
+import { useNavigate } from 'react-router';
+import { actionType, useAppContext } from '../context/AppContextProvider';
+import { useSocket } from '../context/SocketProvider';
 
 const MeetingIcons = () => {
   const [micOn, setMicOn] = useState(true);
   const [camOn, setCamOn] = useState(true);
+  const socket = useSocket();
+  const { state, dispatch } = useAppContext();
+  const navigate = useNavigate();
 
   const toggleMic = () => {
     setMicOn(prevState => !prevState);
@@ -23,6 +29,15 @@ const MeetingIcons = () => {
 
   const toggleCam = () => {
     setCamOn(prevState => !prevState);
+  };
+
+  const leaveMeeting = () => {
+    socket.emit('room:leave', {
+      roomKey: state.roomKey,
+      userSocketId: socket.id,
+    });
+    dispatch({ type: actionType.setRoomKey, value: '' });
+    navigate('/');
   };
 
   return (
@@ -37,7 +52,9 @@ const MeetingIcons = () => {
         className="p-2 bg-blue-500 text-white rounded-full hover:bg-blue-400 ">
         {camOn ? <FaVideo /> : <FaVideoSlash />}
       </button>
-      <button className="p-2 bg-red-500 text-white rounded-full hover:bg-red-400 ">
+      <button
+        onClick={leaveMeeting}
+        className="p-2 bg-red-500 text-white rounded-full hover:bg-red-400 ">
         <FaDoorOpen />
       </button>
     </div>
