@@ -7,6 +7,8 @@ const dotnev = require('dotenv');
 
 dotnev.config();
 
+console.log(process.env);
+
 module.exports = {
   PORT: process.env.NODE_PORT,
   CLIENT_URL: process.env.CLIENT_URL,
