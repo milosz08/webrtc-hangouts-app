@@ -5,7 +5,6 @@
  */
 const dotenv = require('dotenv');
 const path = require('path');
-const { DefinePlugin } = require('webpack');
 const nodeExternals = require('webpack-node-externals');
 const NodemonPlugin = require('nodemon-webpack-plugin');
 const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
@@ -38,12 +37,6 @@ module.exports = {
   plugins: [
     { plugin: new RemoveEmptyScriptsPlugin() },
     { prod: false, plugin: new NodemonPlugin() },
-    {
-      plugin: new DefinePlugin({
-        'process.env.SERVER_PORT': JSON.stringify(process.env.NODE_PORT || 80),
-        'process.env.CLIENT_URL': JSON.stringify(process.env.CLIENT_URL),
-      }),
-    },
   ]
     .filter(details => (isProduction() ? details.prod : true))
     .map(({ plugin }) => plugin),
