@@ -15,6 +15,7 @@ import {
 import { useNavigate } from 'react-router';
 import { actionType, useAppContext } from '../context/AppContextProvider';
 import { useSocket } from '../context/SocketProvider';
+import ConfirmLeaving from './ConfirmLeaving';
 
 const MeetingIcons = () => {
   const [micOn, setMicOn] = useState(true);
@@ -22,6 +23,7 @@ const MeetingIcons = () => {
   const socket = useSocket();
   const { state, dispatch } = useAppContext();
   const navigate = useNavigate();
+  const [showLeaveConfirmation, setShowLeaveConfirmation] = useState(false);
 
   const toggleMic = () => {
     setMicOn(prevState => !prevState);
@@ -40,6 +42,15 @@ const MeetingIcons = () => {
     navigate('/');
   };
 
+  const confirmLeaveMeeting = () => {
+    leaveMeeting();
+    setShowLeaveConfirmation(false);
+  };
+
+  const cancelLeaveMeeting = () => {
+    setShowLeaveConfirmation(false);
+  };
+
   return (
     <div className="flex space-x-4 text-2xl">
       <button
@@ -53,10 +64,16 @@ const MeetingIcons = () => {
         {camOn ? <FaVideo /> : <FaVideoSlash />}
       </button>
       <button
-        onClick={leaveMeeting}
+        onClick={() => setShowLeaveConfirmation(true)}
         className="p-2 bg-red-500 text-white rounded-full hover:bg-red-400 ">
         <FaDoorOpen />
       </button>
+      {showLeaveConfirmation && (
+        <ConfirmLeaving
+          handleLeave={confirmLeaveMeeting}
+          handleStay={cancelLeaveMeeting}
+        />
+      )}
     </div>
   );
 };
