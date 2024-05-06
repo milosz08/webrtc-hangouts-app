@@ -26,7 +26,7 @@ const joinToExistingRoom = (socket, room, nickname) => {
   // check, if user with provided nickname already exist
   if (nicknameExisting) {
     logger.warn(
-      `Attemt to join user with existing nickname: ${nickname} to room with ID: ${room.roomId}`
+      `Attempt to join user with existing nickname: ${nickname} to room with ID: ${room.roomId}`
     );
     io.to(socket.id).emit('room:join-failed', {
       reason: 'Nickname is already been used. Change nickname!',

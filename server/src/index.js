@@ -9,6 +9,7 @@ const { io, httpServer } = require('./socket');
 
 const { onJoinToRoom } = require('./room/join');
 const { onGetRoomParticipants } = require('./room/connection');
+const { onUpdateSessionNickname } = require('./room/nickname');
 const { onLeaveRoom, onDisconnectFromSession } = require('./room/leave');
 
 const PORT = config.PORT;
@@ -18,6 +19,8 @@ io.on('connection', socket => {
   socket.on('room:join', onJoinToRoom);
   // invoke get all participants from meeting with roomId
   socket.on('room:participants', onGetRoomParticipants);
+  // invoke on change participant nickname in active room session
+  socket.on('room:change-nickname', onUpdateSessionNickname);
   // invoke on send signal from user to disconnect from room
   socket.on('room:leave', onLeaveRoom);
   // invoke on disconnected any user from any room (interrupt by closing browser, etc.)
