@@ -10,6 +10,7 @@ import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
 import { actionType, useAppContext } from '../context/AppContextProvider';
 import { useSocket } from '../context/SocketProvider';
+import { codeInputFieldRegex } from '../utils/const';
 
 const PinInput = () => {
   const [pin, setPin] = useState(Array(8).fill(''));
@@ -18,7 +19,6 @@ const PinInput = () => {
   const navigate = useNavigate();
   const { state, dispatch } = useAppContext();
   const { enqueueSnackbar } = useSnackbar();
-  const regex = /^[a-zA-Z0-9]*$/;
 
   const refs = Array(8)
     .fill()
@@ -40,7 +40,7 @@ const PinInput = () => {
   };
 
   const handleChange = (digit, i) => {
-    if (regex.test(digit)) {
+    if (codeInputFieldRegex.test(digit)) {
       updatePin([...pin.slice(0, i), digit, ...pin.slice(i + 1)], i);
     }
   };
@@ -64,7 +64,7 @@ const PinInput = () => {
   const handlePaste = e => {
     e.preventDefault();
     let newPin = [...e.clipboardData.getData('text').slice(0, 8)];
-    newPin = newPin.filter(character => regex.test(character));
+    newPin = newPin.filter(character => codeInputFieldRegex.test(character));
     while (newPin.length < 8) {
       newPin.push('');
     }
