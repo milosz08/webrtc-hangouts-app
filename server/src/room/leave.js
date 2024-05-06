@@ -7,8 +7,8 @@ const { rooms } = require('../state');
 const logger = require('../logger');
 const { io } = require('../socket');
 
-const reasignedRoomHost = (room, participantSocketId) => {
-  let reasigned = false;
+const reassignedRoomHost = (room, participantSocketId) => {
+  let reassigned = false;
   const participant = room.participants.find(
     ({ socketId }) => socketId === participantSocketId
   );
@@ -27,12 +27,12 @@ const reasignedRoomHost = (room, participantSocketId) => {
     logger.info(
       `Change room host from ${previousHost.nickname} to ${room.host.nickname}.`
     );
-    io.to(room.roomId).emit('room:reasigned-host', {
+    io.to(room.roomId).emit('room:reassigned-host', {
       message: `Host leave meeting. ${room.host.nickname} are the host now.`,
     });
-    reasigned = true;
+    reassigned = true;
   }
-  return { participant, reasigned };
+  return { participant, reassigned };
 };
 
 const deleteSelectedRoom = (room, roomKey) => {
@@ -54,7 +54,10 @@ module.exports = {
     const room = rooms.get(roomKey);
     if (room) {
       const { roomId, participants } = room;
-      const { participant, reasigned } = reasignedRoomHost(room, userSocketId);
+      const { participant, reassigned } = reassignedRoomHost(
+        room,
+        userSocketId
+      );
       room.participants = participants.filter(
         ({ socketId }) => socketId !== userSocketId
       );
@@ -62,7 +65,7 @@ module.exports = {
       if (isRoomDeleted) {
         return;
       }
-      if (!reasigned) {
+      if (!reassigned) {
         io.to(roomId).emit('room:participant-leaved', {
           message: `User ${participant.nickname} has leaved the room.`,
         });
@@ -76,14 +79,14 @@ module.exports = {
   onDisconnectFromSession: function () {
     let foundClientSocketRoom = null;
     let disconnectedParticipant = null;
-    let reasignedHost = false;
+    let reassignedHost = false;
     rooms.forEach((room, key) => {
-      const reasignedData = reasignedRoomHost(room, this.id);
-      if (reasignedData) {
-        const { participant, reasigned } = reasignedData;
+      const reassignedData = reassignedRoomHost(room, this.id);
+      if (reassignedData) {
+        const { participant, reassigned } = reassignedData;
         foundClientSocketRoom = room;
         disconnectedParticipant = participant;
-        reasignedHost = reasigned;
+        reassignedHost = reassigned;
       }
       room.participants = room.participants.filter(
         ({ socketId }) => socketId !== this.id
@@ -92,7 +95,7 @@ module.exports = {
     });
     if (foundClientSocketRoom && disconnectedParticipant) {
       const { roomId, participants, host } = foundClientSocketRoom;
-      if (!reasignedHost) {
+      if (!reassignedHost) {
         io.to(roomId).emit('room:participant-leaved', {
           message: `User ${disconnectedParticipant.nickname} has leaved the room.`,
         });
