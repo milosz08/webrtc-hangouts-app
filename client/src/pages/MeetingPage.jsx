@@ -74,15 +74,14 @@ const MeetingPage = () => {
   };
 
   const onSnackbarMessageAction = useCallback(
-    ({ message }) => {
-      enqueueSnackbar(message);
-    },
+    ({ message }) => enqueueSnackbar(message),
     [enqueueSnackbar]
   );
 
   const getRoomParticipants = useCallback(({ host, participants }) => {
     const cameras = participants.map(({ nickname, socketId }) => ({
       nickname,
+      socketId,
       isHost: host.socketId === socketId,
     }));
     setCameras(cameras);
@@ -96,6 +95,21 @@ const MeetingPage = () => {
     [enqueueSnackbar, navigate]
   );
 
+  const onUpdateUserNickname = useCallback(
+    ({ updatedNickname, userSocketId, message }) => {
+      const prevCameras = [...cameras];
+      const userIndex = prevCameras.findIndex(
+        ({ socketId }) => userSocketId === socketId
+      );
+      if (userIndex !== -1) {
+        prevCameras[userIndex].nickname = updatedNickname;
+      }
+      setCameras(prevCameras);
+      enqueueSnackbar(message);
+    },
+    [cameras, enqueueSnackbar]
+  );
+
   useEffect(() => {
     socket.emit('room:participants', {
       roomKey: state.roomKey,
@@ -107,16 +121,24 @@ const MeetingPage = () => {
     socket.on('room:participant-joined', onSnackbarMessageAction);
     socket.on('room:participant-leaved', onSnackbarMessageAction);
     socket.on('room:participants', getRoomParticipants);
-    socket.on('room:reasigned-host', onSnackbarMessageAction);
+    socket.on('room:update-nickname', onUpdateUserNickname);
+    socket.on('room:reassigned-host', onSnackbarMessageAction);
     socket.on('room:deleted', onDeleteRoom);
     return () => {
       socket.off('room:participant-joined', onSnackbarMessageAction);
       socket.off('room:participant-leaved', onSnackbarMessageAction);
       socket.off('room:participants', getRoomParticipants);
-      socket.off('room:reasigned-host', onSnackbarMessageAction);
+      socket.off('room:update-nickname', onUpdateUserNickname);
+      socket.off('room:reassigned-host', onSnackbarMessageAction);
       socket.off('room:deleted', onDeleteRoom);
     };
-  }, [socket, onSnackbarMessageAction, getRoomParticipants, onDeleteRoom]);
+  }, [
+    socket,
+    onSnackbarMessageAction,
+    getRoomParticipants,
+    onUpdateUserNickname,
+    onDeleteRoom,
+  ]);
 
   return (
     <div className="bg-custom-meeting dark:bg-dark-meeting h-full flex-grow flex flex-col md:flex-row overflow-hidden">

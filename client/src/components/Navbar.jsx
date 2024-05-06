@@ -4,10 +4,11 @@
  * Part of Silesian University of Technology project.
  * Created only for learning purposes.
  */
-import { useRef, useState } from 'react';
-import clsx from 'clsx';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useSnackbar } from 'notistack';
 import { useOnClickOutside } from 'usehooks-ts';
 import { actionType, useAppContext } from '../context/AppContextProvider';
+import { useSocket } from '../context/SocketProvider';
 import DarkModeToggleButton from './DarkModeToggleButton';
 import NicknameDropdown from './NicknameDropdown';
 
@@ -16,23 +17,59 @@ const Navbar = () => {
   const dropdownRef = useRef(null);
   const { state, dispatch } = useAppContext();
   const nicknameInput = useRef(null);
-
-  const toggleDropdown = () => {
-    if (!state.roomKey) {
-      setIsOpen(prev => !prev);
-    }
-  };
+  const socket = useSocket();
+  const { enqueueSnackbar } = useSnackbar();
 
   useOnClickOutside(dropdownRef, () => setIsOpen(false));
+
+  const changeNicknameSideEffect = useCallback(
+    updatedNickname => {
+      dispatch({ type: actionType.setNickname, value: updatedNickname });
+      localStorage.setItem('nickname', updatedNickname);
+      setIsOpen(false);
+    },
+    [dispatch]
+  );
 
   const handleSave = () => {
     const inputValue = nicknameInput.current.value;
     if (inputValue.length > 0) {
-      dispatch({ type: actionType.setNickname, value: inputValue });
-      localStorage.setItem('nickname', inputValue);
-      setIsOpen(false);
+      const { roomKey } = state;
+      if (roomKey) {
+        socket.emit('room:change-nickname', {
+          newNickname: inputValue,
+          userSocketId: socket.id,
+          roomKey,
+        });
+      } else {
+        changeNicknameSideEffect(inputValue);
+      }
     }
   };
+
+  const onFailedChangeUserNickname = useCallback(
+    ({ reason }) => enqueueSnackbar(reason),
+    [enqueueSnackbar]
+  );
+
+  const onUpdateNickname = useCallback(
+    ({ updatedNickname }) => changeNicknameSideEffect(updatedNickname),
+    [changeNicknameSideEffect]
+  );
+
+  useEffect(() => {
+    socket.on('user:update-nickname', onUpdateNickname);
+    socket.on('user:failed-update-nickname', onFailedChangeUserNickname);
+    return () => {
+      socket.off('user:update-nickname', onUpdateNickname);
+      socket.off('user:failed-update-nickname', onFailedChangeUserNickname);
+    };
+  }, [
+    socket,
+    onFailedChangeUserNickname,
+    changeNicknameSideEffect,
+    onUpdateNickname,
+  ]);
 
   return (
     <nav
@@ -42,14 +79,9 @@ const Navbar = () => {
         <DarkModeToggleButton />
         <div className="relative inline-block text-left" ref={dropdownRef}>
           <span
-            className={clsx(
-              'relative text-gray-600 dark:text-white tracking-wide',
-              {
-                'cursor-pointer after:absolute after:bg-gray-700 after:h-[3px] after:w-0 after:left-0 after:bottom-[-5px] after:transition-[0.3s] dark:after:bg-white hover:after:w-full':
-                  !state.roomKey,
-              }
-            )}
-            onClick={toggleDropdown}>
+            className="relative text-gray-600 dark:text-white tracking-wide cursor-pointer after:absolute after:bg-gray-700 
+            after:h-[3px] after:w-0 after:left-0 after:bottom-[-5px] after:transition-[0.3s] dark:after:bg-white hover:after:w-full"
+            onClick={() => setIsOpen(prev => !prev)}>
             {state.nickname}
           </span>
           {isOpen && (
