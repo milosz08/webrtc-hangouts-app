@@ -18,6 +18,7 @@ const PinInput = () => {
   const navigate = useNavigate();
   const { state, dispatch } = useAppContext();
   const { enqueueSnackbar } = useSnackbar();
+  const regex = /^[a-zA-Z0-9]*$/;
 
   const refs = Array(8)
     .fill()
@@ -28,16 +29,21 @@ const PinInput = () => {
     if (i < 7) {
       refs[i + 1].current.focus();
     } else {
-      socket.emit('room:join', {
-        nickname: state.nickname,
-        code: newPin.join(''),
-      });
-      setIsChecking(true);
+      if (newPin.every(digit => digit !== '')) {
+        socket.emit('room:join', {
+          nickname: state.nickname,
+          code: newPin.join(''),
+        });
+        setIsChecking(true);
+      }
     }
   };
 
-  const handleChange = (digit, i) =>
-    updatePin([...pin.slice(0, i), digit, ...pin.slice(i + 1)], i);
+  const handleChange = (digit, i) => {
+    if (regex.test(digit)) {
+      updatePin([...pin.slice(0, i), digit, ...pin.slice(i + 1)], i);
+    }
+  };
 
   const handleKeyDown = (e, i) => {
     if (e.key === 'Backspace') {
@@ -57,11 +63,12 @@ const PinInput = () => {
 
   const handlePaste = e => {
     e.preventDefault();
-    const newPin = [...e.clipboardData.getData('text').slice(0, 8)];
-    while (newPin.length < 8) newPin.push('');
-    {
-      updatePin(newPin, newPin.length - 1);
+    let newPin = [...e.clipboardData.getData('text').slice(0, 8)];
+    newPin = newPin.filter(character => regex.test(character));
+    while (newPin.length < 8) {
+      newPin.push('');
     }
+    updatePin(newPin, newPin.length - 1);
   };
 
   const onRoomSucceedJoin = useCallback(
