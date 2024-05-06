@@ -38,7 +38,10 @@ const NicknameDropdown = ({ nicknameInput, handleSave }) => {
           dark:focus:ring-blue-500 dark:focus:border-blue-500"
         />
         <div className="my-2">
-          <CustomButton type="submit" onClick={handleSave}>
+          <CustomButton
+            tagOrComponent="button"
+            type="submit"
+            onClick={handleSave}>
             Save
           </CustomButton>
         </div>

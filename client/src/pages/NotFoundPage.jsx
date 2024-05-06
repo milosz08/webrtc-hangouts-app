@@ -18,10 +18,11 @@ const NotFoundPage = () => {
             meeting has not ended.
           </p>
           <div className="py-4 md:py-8">
-            <CustomButton>
-              <NavLink to="/" className="text-sm lg:text-base">
-                Go to Home Page
-              </NavLink>
+            <CustomButton
+              tagOrComponent={NavLink}
+              to="/"
+              className="text-sm lg:text-base">
+              Go to Home Page
             </CustomButton>
           </div>
         </div>
