@@ -4,25 +4,20 @@
  * Part of Silesian University of Technology project.
  * Created only for learning purposes.
  */
-import { createRef, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
 import { actionType, useAppContext } from '../context/AppContextProvider';
 import { useSocket } from '../context/SocketProvider';
-import { codeInputFieldRegex } from '../utils/const';
+import usePinHandler from '../hooks/usePinHandler';
 
 const PinInput = () => {
-  const [pin, setPin] = useState(Array(8).fill(''));
   const [isChecking, setIsChecking] = useState(false);
   const socket = useSocket();
   const navigate = useNavigate();
   const { state, dispatch } = useAppContext();
   const { enqueueSnackbar } = useSnackbar();
-
-  const refs = Array(8)
-    .fill()
-    .map(() => createRef());
 
   const updatePin = (newPin, i) => {
     setPin(newPin);
@@ -39,37 +34,8 @@ const PinInput = () => {
     }
   };
 
-  const handleChange = (digit, i) => {
-    if (codeInputFieldRegex.test(digit)) {
-      updatePin([...pin.slice(0, i), digit, ...pin.slice(i + 1)], i);
-    }
-  };
-
-  const handleKeyDown = (e, i) => {
-    if (e.key === 'Backspace') {
-      if (pin[i] !== '') {
-        setPin([...pin.slice(0, i), '', ...pin.slice(i + 1)]);
-        refs[i].current.focus();
-      } else if (i > 0) {
-        setPin([...pin.slice(0, i - 1), '', ...pin.slice(i)]);
-        refs[i - 1].current.focus();
-      }
-    } else if (e.key.startsWith('Arrow')) {
-      refs[
-        Math.min(Math.max(i + (e.key === 'ArrowRight' ? 1 : -1), 0), 7)
-      ].current.focus();
-    }
-  };
-
-  const handlePaste = e => {
-    e.preventDefault();
-    let newPin = [...e.clipboardData.getData('text').slice(0, 8)];
-    newPin = newPin.filter(character => codeInputFieldRegex.test(character));
-    while (newPin.length < 8) {
-      newPin.push('');
-    }
-    updatePin(newPin, newPin.length - 1);
-  };
+  const { refs, handleChange, handleKeyDown, handlePaste, setPin, pin } =
+    usePinHandler(updatePin);
 
   const onRoomSucceedJoin = useCallback(
     ({ meetingId, meetingKey }) => {
@@ -86,10 +52,8 @@ const PinInput = () => {
       setPin(Array(8).fill(''));
       enqueueSnackbar(reason);
     },
-    [enqueueSnackbar]
+    [enqueueSnackbar, setPin]
   );
-
-  useEffect(() => refs[0].current.focus(), []);
 
   useEffect(() => {
     socket.on('room:join-succeed', onRoomSucceedJoin);
