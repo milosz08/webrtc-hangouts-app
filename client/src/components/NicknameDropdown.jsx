@@ -4,17 +4,35 @@
  * Part of Silesian University of Technology project.
  * Created only for learning purposes.
  */
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useAppContext } from '../context/AppContextProvider';
+import { generateDefaultNickname } from '../utils/nicknameUtils';
 import CustomButton from './CustomButton';
 
 const NicknameDropdown = ({ nicknameInput, handleSave }) => {
-  const { state } = useAppContext();
+  const { state, dispatch } = useAppContext();
+  const [tempNickname, setTempNickname] = useState(state.nickname);
 
   const handleKeyDown = event => {
     if (event.key === 'Enter') {
-      handleSave();
+      saveNickname();
     }
+  };
+
+  const setDefaultNickname = () => {
+    const defaultNickname = generateDefaultNickname();
+    setTempNickname(defaultNickname);
+  };
+
+  const saveNickname = () => {
+    localStorage.setItem('nickname', tempNickname);
+    dispatch({ type: 'setNickname', value: tempNickname });
+    handleSave();
+  };
+
+  const handleChange = event => {
+    setTempNickname(event.target.value);
   };
 
   return (
@@ -30,7 +48,8 @@ const NicknameDropdown = ({ nicknameInput, handleSave }) => {
         <input
           type="text"
           ref={nicknameInput}
-          defaultValue={state.nickname}
+          value={tempNickname}
+          onChange={handleChange}
           maxLength={30}
           onKeyDown={handleKeyDown}
           className="bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full
@@ -40,8 +59,15 @@ const NicknameDropdown = ({ nicknameInput, handleSave }) => {
         <div className="my-2">
           <CustomButton
             tagOrComponent="button"
+            type="button"
+            onClick={setDefaultNickname}>
+            Set Default Nickname
+          </CustomButton>
+          <CustomButton
+            tagOrComponent="button"
             type="submit"
-            onClick={handleSave}>
+            onClick={saveNickname}
+            className="mt-2">
             Save
           </CustomButton>
         </div>
