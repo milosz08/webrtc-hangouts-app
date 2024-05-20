@@ -6,7 +6,7 @@
  */
 import { createContext, useContext, useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
-import { UniqueOTP } from 'unique-string-generator';
+import { generateDefaultNickname } from '../utils/nicknameUtils';
 
 const AppContext = createContext(null);
 
@@ -50,7 +50,7 @@ const AppContextProvider = ({ children }) => {
       type: actionType.setNickname,
       value: storedNickname
         ? storedNickname.substring(0, 30)
-        : `Guest${UniqueOTP(5)}`,
+        : generateDefaultNickname(),
     });
   }, []);
 

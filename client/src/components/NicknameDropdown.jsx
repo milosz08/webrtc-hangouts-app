@@ -6,8 +6,8 @@
  */
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { UniqueOTP } from 'unique-string-generator';
 import { useAppContext } from '../context/AppContextProvider';
+import { generateDefaultNickname } from '../utils/nicknameUtils';
 import CustomButton from './CustomButton';
 
 const NicknameDropdown = ({ nicknameInput, handleSave }) => {
@@ -21,7 +21,7 @@ const NicknameDropdown = ({ nicknameInput, handleSave }) => {
   };
 
   const setDefaultNickname = () => {
-    const defaultNickname = `Guest${UniqueOTP(5)}`;
+    const defaultNickname = generateDefaultNickname();
     setTempNickname(defaultNickname);
   };
 
