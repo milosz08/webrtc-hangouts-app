@@ -32,9 +32,6 @@ jobs:
           yarn install
           cd server && yarn run build
 
-      - name: Link PM2
-        run: sudo ln -s "$NVM_DIR/versions/node/v18.12.1/bin/pm2" "/usr/local/bin/pm2"
-
       - name: Move build file and create .env file
         run: |
           cp -f server/dist/index.js /var/www/webrtc-video-hangouts-api/
