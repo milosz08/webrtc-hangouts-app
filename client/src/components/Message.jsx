@@ -21,7 +21,7 @@ const Message = ({ message, isUser, username }) => {
         })}>
         <p className="px-4 font-bold">{username}</p>
         <div
-          className={clsx('rounded-lg px-4 py-2 mx-2 mb-2', {
+          className={clsx('rounded-lg px-4 py-2 mx-2 mb-2 break-all', {
             'bg-blue-400 text-white': isUser,
             'bg-gray-200 dark:bg-[#1A314E] dark:text-white': !isUser,
           })}>
