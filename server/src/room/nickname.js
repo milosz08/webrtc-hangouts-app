@@ -50,6 +50,10 @@ module.exports = {
       userSocketId: this.id,
       message: `User ${prevNickname} changed nickname to ${newNickname}.`,
     });
+    io.to(room.roomId).emit('chat:update-nickname', {
+      prevNickname,
+      newNickname,
+    });
     // emit only for user whom changing nickname
     io.to(this.id).emit('user:update-nickname', {
       updatedNickname: newNickname,

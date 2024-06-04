@@ -3,7 +3,7 @@
  * Part of Silesian University of Technology project.
  * Created only for learning purposes.
  */
-const { rooms } = require('../state');
+const { rooms, messages } = require('../state');
 const logger = require('../logger');
 const { io } = require('../socket');
 
@@ -44,6 +44,7 @@ const deleteSelectedRoom = (room, roomKey) => {
       message: `Room was deleted.`,
     });
     rooms.delete(roomKey);
+    messages.delete(room.roomId);
     return true;
   }
   return false;

@@ -11,6 +11,7 @@ const { onJoinToRoom } = require('./room/join');
 const { onGetRoomParticipants } = require('./room/connection');
 const { onUpdateSessionNickname } = require('./room/nickname');
 const { onLeaveRoom, onDisconnectFromSession } = require('./room/leave');
+const { processMessage, fetchMessages, clearChat } = require('./room/chat');
 
 const PORT = config.PORT;
 
@@ -25,6 +26,12 @@ io.on('connection', socket => {
   socket.on('room:leave', onLeaveRoom);
   // invoke on disconnected any user from any room (interrupt by closing browser, etc.)
   socket.on('disconnect', onDisconnectFromSession);
+  // process message from room's chat
+  socket.on('chat:mess-send', processMessage);
+  // fetch messages from selected room
+  socket.on('chat:mess-fetch', fetchMessages);
+  // clear chat messages from selected room
+  socket.on('chat:clear', clearChat);
 });
 
 httpServer.listen(PORT, () => {
