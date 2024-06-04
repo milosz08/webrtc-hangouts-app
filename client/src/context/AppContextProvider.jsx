@@ -33,7 +33,7 @@ const reducer = (state, { type, value }) => {
         roomKey: value,
       };
     default:
-      throw new Error(`Unknow action type: ${state}`);
+      throw new Error(`Unknown action type: ${state}`);
   }
 };
 

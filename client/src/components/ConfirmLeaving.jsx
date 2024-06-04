@@ -1,22 +1,24 @@
 'use strict';
+
 /*
  * Part of Silesian University of Technology project.
  * Created only for learning purposes.
  */
-
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { useOnClickOutside } from 'usehooks-ts'
 import { useRef } from 'react';
+import clsx from 'clsx';
+import PropTypes from 'prop-types';
+import { useOnClickOutside } from 'usehooks-ts';
 
 const ConfirmLeaving = ({ handleLeave, handleStay }) => {
-    const ref = useRef(null);
-    useOnClickOutside(ref, handleStay);
+  const ref = useRef(null);
+  useOnClickOutside(ref, handleStay);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div ref={ref} className="w-96 bg-white rounded-lg shadow-lg p-6">
-        <p className="text-lg mb-4">Are you sure you want to leave this meeting?</p>
+        <p className="text-lg mb-4">
+          Are you sure you want to leave this meeting?
+        </p>
         <div className="flex justify-end">
           <button
             onClick={handleStay}
@@ -39,7 +41,6 @@ const ConfirmLeaving = ({ handleLeave, handleStay }) => {
     </div>
   );
 };
-
 
 ConfirmLeaving.propTypes = {
   handleLeave: PropTypes.func.isRequired,

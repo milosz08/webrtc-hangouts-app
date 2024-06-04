@@ -16,23 +16,18 @@ const NicknameDropdown = ({ nicknameInput, handleSave }) => {
 
   const handleKeyDown = event => {
     if (event.key === 'Enter') {
-      saveNickname();
+      saveNickname(tempNickname);
     }
   };
 
   const setDefaultNickname = () => {
-    const defaultNickname = generateDefaultNickname();
-    setTempNickname(defaultNickname);
+    saveNickname(generateDefaultNickname());
   };
 
-  const saveNickname = () => {
-    localStorage.setItem('nickname', tempNickname);
-    dispatch({ type: 'setNickname', value: tempNickname });
-    handleSave();
-  };
-
-  const handleChange = event => {
-    setTempNickname(event.target.value);
+  const saveNickname = nickname => {
+    localStorage.setItem('nickname', nickname);
+    dispatch({ type: 'setNickname', value: nickname });
+    handleSave(nickname);
   };
 
   return (
@@ -49,7 +44,7 @@ const NicknameDropdown = ({ nicknameInput, handleSave }) => {
           type="text"
           ref={nicknameInput}
           value={tempNickname}
-          onChange={handleChange}
+          onChange={e => setTempNickname(e.target.value)}
           maxLength={30}
           onKeyDown={handleKeyDown}
           className="bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full
@@ -66,7 +61,7 @@ const NicknameDropdown = ({ nicknameInput, handleSave }) => {
           <CustomButton
             tagOrComponent="button"
             type="submit"
-            onClick={saveNickname}
+            onClick={() => saveNickname(tempNickname)}
             className="mt-2">
             Save
           </CustomButton>
