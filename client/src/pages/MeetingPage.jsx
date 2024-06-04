@@ -48,6 +48,7 @@ const MeetingPage = () => {
     return () => {
       window.removeEventListener('resize', updateVisibleCameras);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isChatOpen]);
 
   const onDragStart = (e, index) => {

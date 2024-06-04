@@ -56,7 +56,7 @@ const NicknameDropdown = ({ nicknameInput, handleSave }) => {
             tagOrComponent="button"
             type="button"
             onClick={setDefaultNickname}>
-            Set Default Nickname
+            Set default nickname
           </CustomButton>
           <CustomButton
             tagOrComponent="button"
