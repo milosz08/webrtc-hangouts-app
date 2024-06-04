@@ -9,32 +9,30 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { useOnClickOutside } from 'usehooks-ts';
 
-const ConfirmLeaving = ({ handleLeave, handleStay }) => {
+const ConfirmModal = ({ handleNeg, handlePos, question, pos, neg }) => {
   const ref = useRef(null);
-  useOnClickOutside(ref, handleStay);
+  useOnClickOutside(ref, handlePos);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div ref={ref} className="w-96 bg-white rounded-lg shadow-lg p-6">
-        <p className="text-lg mb-4">
-          Are you sure you want to leave this meeting?
-        </p>
+        <p className="text-lg mb-4">{question}</p>
         <div className="flex justify-end">
           <button
-            onClick={handleStay}
+            onClick={handlePos}
             className={clsx(
               'mr-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-lg text-sm px-5 py-2.5',
               'text-center transition ease-out duration-200 focus:outline-none focus:ring-4 focus:ring-blue-400 dark:focus:ring-purple-800'
             )}>
-            Stay
+            {pos}
           </button>
           <button
-            onClick={handleLeave}
+            onClick={handleNeg}
             className={clsx(
               'bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm px-5 py-2.5',
               'text-center transition ease-out duration-200 focus:outline-none focus:ring-4 focus:ring-blue-400 dark:focus:ring-purple-800'
             )}>
-            Leave the meeting
+            {neg}
           </button>
         </div>
       </div>
@@ -42,9 +40,12 @@ const ConfirmLeaving = ({ handleLeave, handleStay }) => {
   );
 };
 
-ConfirmLeaving.propTypes = {
-  handleLeave: PropTypes.func.isRequired,
-  handleStay: PropTypes.func.isRequired,
+ConfirmModal.propTypes = {
+  handleNeg: PropTypes.func.isRequired,
+  handlePos: PropTypes.func.isRequired,
+  question: PropTypes.string.isRequired,
+  pos: PropTypes.string.isRequired,
+  neg: PropTypes.string.isRequired,
 };
 
-export default ConfirmLeaving;
+export default ConfirmModal;
