@@ -11,23 +11,17 @@ import { generateDefaultNickname } from '../utils/nicknameUtils';
 import CustomButton from './CustomButton';
 
 const NicknameDropdown = ({ nicknameInput, handleSave }) => {
-  const { state, dispatch } = useAppContext();
+  const { state } = useAppContext();
   const [tempNickname, setTempNickname] = useState(state.nickname);
 
   const handleKeyDown = event => {
     if (event.key === 'Enter') {
-      saveNickname(tempNickname);
+      handleSave(tempNickname);
     }
   };
 
   const setDefaultNickname = () => {
-    saveNickname(generateDefaultNickname());
-  };
-
-  const saveNickname = nickname => {
-    localStorage.setItem('nickname', nickname);
-    dispatch({ type: 'setNickname', value: nickname });
-    handleSave(nickname);
+    handleSave(generateDefaultNickname());
   };
 
   return (
@@ -61,7 +55,7 @@ const NicknameDropdown = ({ nicknameInput, handleSave }) => {
           <CustomButton
             tagOrComponent="button"
             type="submit"
-            onClick={() => saveNickname(tempNickname)}
+            onClick={() => handleSave(tempNickname)}
             className="mt-2">
             Save
           </CustomButton>

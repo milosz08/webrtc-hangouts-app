@@ -62,12 +62,7 @@ const Navbar = () => {
       socket.off('user:update-nickname', onUpdateNickname);
       socket.off('user:failed-update-nickname', onFailedChangeUserNickname);
     };
-  }, [
-    socket,
-    onFailedChangeUserNickname,
-    changeNicknameSideEffect,
-    onUpdateNickname,
-  ]);
+  }, [socket, onFailedChangeUserNickname, onUpdateNickname]);
 
   return (
     <nav
