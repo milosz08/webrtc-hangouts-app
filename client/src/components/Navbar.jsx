@@ -62,18 +62,13 @@ const Navbar = () => {
       socket.off('user:update-nickname', onUpdateNickname);
       socket.off('user:failed-update-nickname', onFailedChangeUserNickname);
     };
-  }, [
-    socket,
-    onFailedChangeUserNickname,
-    changeNicknameSideEffect,
-    onUpdateNickname,
-  ]);
+  }, [socket, onFailedChangeUserNickname, onUpdateNickname]);
 
   return (
     <nav
       className="bg-gradient-to-r from-custom-blue via-custom-purple to-custom-blue dark:from-dark-blue dark:via-dark-purple-nav 
                 dark:to-dark-blue border-b-2 border-border-color dark:border-dark-border">
-      <div className="max-w-screen-xl flex justify-between items-center p-3 sm:p-4 px-8 mx-auto">
+      <div className="max-w-screen-xl flex justify-between items-center p-3 px-8 mx-auto">
         <DarkModeToggleButton />
         <div className="relative inline-block text-left" ref={dropdownRef}>
           <span

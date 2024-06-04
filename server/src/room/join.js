@@ -3,7 +3,7 @@
  * Part of Silesian University of Technology project.
  * Created only for learning purposes.
  */
-const { rooms } = require('../state');
+const { rooms, messages } = require('../state');
 const logger = require('../logger');
 const { io } = require('../socket');
 const { v4: uuidv4 } = require('uuid');
@@ -15,6 +15,7 @@ const createNewRoomAndJoinHost = (socket, roomId, nickname, code) => {
     host: participant,
     participants: [participant],
   });
+  messages.set(roomId, []);
   socket.join(roomId);
   logger.info(`Created new room with ID: ${roomId} and host: ${nickname}`);
 };

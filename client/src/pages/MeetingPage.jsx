@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router';
 import CameraWindow from '../components/CameraWindow';
 import Chat from '../components/Chat';
 import MeetingIcons from '../components/MeetingIcons';
-import { useAppContext } from '../context/AppContextProvider';
+import { actionType, useAppContext } from '../context/AppContextProvider';
 import { useSocket } from '../context/SocketProvider';
 
 const MeetingPage = () => {
@@ -21,7 +21,7 @@ const MeetingPage = () => {
   const [highlightedIndex, setHighlightedIndex] = useState(null);
   const [isChatOpen, setChatOpen] = useState(false);
   const socket = useSocket();
-  const { state } = useAppContext();
+  const { state, dispatch } = useAppContext();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -48,6 +48,7 @@ const MeetingPage = () => {
     return () => {
       window.removeEventListener('resize', updateVisibleCameras);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isChatOpen]);
 
   const onDragStart = (e, index) => {
@@ -78,14 +79,21 @@ const MeetingPage = () => {
     [enqueueSnackbar]
   );
 
-  const getRoomParticipants = useCallback(({ host, participants }) => {
-    const cameras = participants.map(({ nickname, socketId }) => ({
-      nickname,
-      socketId,
-      isHost: host.socketId === socketId,
-    }));
-    setCameras(cameras);
-  }, []);
+  const getRoomParticipants = useCallback(
+    ({ host, participants }) => {
+      const cameras = participants.map(({ nickname, socketId }) => ({
+        nickname,
+        socketId,
+        isHost: host.socketId === socketId,
+      }));
+      setCameras(cameras);
+      dispatch({
+        type: actionType.setIsHost,
+        value: host.socketId === socket.id,
+      });
+    },
+    [dispatch, socket.id]
+  );
 
   const onDeleteRoom = useCallback(
     ({ message }) => {
@@ -221,7 +229,7 @@ const MeetingPage = () => {
             <button
               onClick={toggleChat}
               className={clsx(
-                'absolute m-2 text-white z-20 p-1 rounded rounded-2xl',
+                'absolute m-3.5 text-white z-20 p-1 rounded rounded-2xl',
                 'rotate-90 md:rotate-0',
                 'top-0 left-0 md:top-0 md:left-0 md:bottom-auto md:left-auto',
                 isChatOpen

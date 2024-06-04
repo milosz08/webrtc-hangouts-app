@@ -13,11 +13,13 @@ const AppContext = createContext(null);
 export const actionType = {
   setNickname: 'setNickname',
   setRoomKey: 'setRoomKey',
+  setIsHost: 'setIsHost',
 };
 
 const initState = {
   nickname: '',
   roomKey: '',
+  isHost: false,
 };
 
 const reducer = (state, { type, value }) => {
@@ -31,6 +33,11 @@ const reducer = (state, { type, value }) => {
       return {
         ...state,
         roomKey: value,
+      };
+    case actionType.setIsHost:
+      return {
+        ...state,
+        isHost: value,
       };
     default:
       throw new Error(`Unknown action type: ${state}`);

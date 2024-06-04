@@ -15,7 +15,7 @@ import {
 import { useNavigate } from 'react-router';
 import { actionType, useAppContext } from '../context/AppContextProvider';
 import { useSocket } from '../context/SocketProvider';
-import ConfirmLeaving from './ConfirmLeaving';
+import ConfirmModal from './ConfirmModal';
 
 const MeetingIcons = () => {
   const [micOn, setMicOn] = useState(true);
@@ -69,9 +69,12 @@ const MeetingIcons = () => {
         <FaDoorOpen />
       </button>
       {showLeaveConfirmation && (
-        <ConfirmLeaving
-          handleLeave={confirmLeaveMeeting}
-          handleStay={cancelLeaveMeeting}
+        <ConfirmModal
+          handleNeg={confirmLeaveMeeting}
+          handlePos={cancelLeaveMeeting}
+          question="Are you sure you want to leave this meeting?"
+          pos="Stay"
+          neg="Leave the meeting"
         />
       )}
     </div>
