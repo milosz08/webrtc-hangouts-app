@@ -16,7 +16,6 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const { state, dispatch } = useAppContext();
-  const nicknameInput = useRef(null);
   const socket = useSocket();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -31,18 +30,17 @@ const Navbar = () => {
     [dispatch]
   );
 
-  const handleSave = () => {
-    const inputValue = nicknameInput.current.value;
-    if (inputValue.length > 0) {
+  const handleSave = nickname => {
+    if (nickname.length > 0) {
       const { roomKey } = state;
       if (roomKey) {
         socket.emit('room:change-nickname', {
-          newNickname: inputValue,
+          newNickname: nickname,
           userSocketId: socket.id,
           roomKey,
         });
       } else {
-        changeNicknameSideEffect(inputValue);
+        changeNicknameSideEffect(nickname);
       }
     }
   };
@@ -84,12 +82,7 @@ const Navbar = () => {
             onClick={() => setIsOpen(prev => !prev)}>
             {state.nickname}
           </span>
-          {isOpen && (
-            <NicknameDropdown
-              nicknameInput={nicknameInput}
-              handleSave={handleSave}
-            />
-          )}
+          {isOpen && <NicknameDropdown handleSave={handleSave} />}
         </div>
       </div>
     </nav>
