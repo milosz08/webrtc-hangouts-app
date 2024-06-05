@@ -5,34 +5,3 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-::-webkit-scrollbar {
-  width: 7px;
-  height: 7px;
-}
-
-::-webkit-scrollbar-track {
-  background: #7dd3fc;
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #9333ea;
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #6d28d9;
-}
-
-.dark ::-webkit-scrollbar-track {
-  background: #1d384f;
-}
-
-.dark ::-webkit-scrollbar-thumb {
-  background: #3c668c;
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: #355a7c;
-}
