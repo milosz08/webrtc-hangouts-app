@@ -165,7 +165,7 @@ const MeetingPage = () => {
           ) : null}
           <div
             id="content"
-            className="flex justify-around overflow-x-auto p-2 scrollbar scrollbar-thumb-purple-400 scrollbar-track-blue-200 dark:scrollbar-thumb-purple-800 dark:scrollbar-track-blue-400 scrollbar-thumb-rounded-full scrollbar-track-rounded-full shadow-inner">
+            className="flex justify-around overflow-x-auto p-2 scrollbar scrollbar-thin scrollbar-thumb-purple-400 scrollbar-track-blue-200 dark:scrollbar-thumb-purple-800 dark:scrollbar-track-blue-400 scrollbar-thumb-rounded-full scrollbar-track-rounded-full shadow-inner">
             <div className="inline-flex">
               {cameras.slice(visibleCameras).map((camera, index) => (
                 <div className="w-40 flex-shrink-0 px-1" key={camera}>

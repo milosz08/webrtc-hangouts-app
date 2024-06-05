@@ -123,7 +123,8 @@ const Chat = () => {
       </div>
       <div
         ref={chatBoxContainer}
-        className="py-4 h-[calc(100vh-(66px+55px+134px))] overflow-y-auto flex flex-col-reverse">
+        className="py-4 h-[calc(100vh-(66px+55px+134px))] flex flex-col-reverse overflow-y-auto 
+        scrollbar scrollbar-thin scrollbar-thumb-purple-400 scrollbar-track-blue-200 dark:scrollbar-thumb-purple-800 dark:scrollbar-track-blue-400 scrollbar-thumb-rounded-full scrollbar-track-rounded-full shadow-inner">
         {messages.map(({ userSocket, userNickname, message }) => (
           <Message
             key={`${socket.id}-${userNickname}-${UniqueOTP(10)}`}
@@ -137,7 +138,8 @@ const Chat = () => {
         <div className="flex flex-col gap-2">
           <textarea
             ref={messageField}
-            className="flex-grow rounded-md border-2 dark:border-gray-600 p-2 bg-gray-200 dark:bg-dark-textarea dark:text-white resize-none"
+            className="flex-grow rounded-md border-2 dark:border-gray-600 p-2 bg-gray-200 dark:bg-dark-textarea dark:text-white resize-none
+            scrollbar scrollbar-thin scrollbar-thumb-purple-400 scrollbar-track-blue-200 dark:scrollbar-thumb-purple-800 dark:scrollbar-track-blue-400 scrollbar-thumb-rounded-full scrollbar-track-rounded-full shadow-inner"
             placeholder="Type message..."
           />
           <div className="justify-end flex">
