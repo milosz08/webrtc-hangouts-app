@@ -108,6 +108,13 @@ const Chat = () => {
     onClearChat,
   ]);
 
+  const handleKeyDown = event => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      sendMessage();
+    }
+  };
+
   return (
     <div className="h-full bg-gradient-to-b from-custom-blue via-custom-purple to-custom-blue dark:from-dark-blue dark:via-dark-purple dark:to-dark-blue border-l-2 dark:border-gray-600">
       <div className="w-full h-[55px] border-custom-purple dark:border-gray-600 border-b-2 bg-blue-200 dark:bg-dark-bg flex justify-end p-2">
@@ -141,6 +148,7 @@ const Chat = () => {
             className="flex-grow rounded-md border-2 dark:border-gray-600 p-2 bg-gray-200 dark:bg-dark-textarea dark:text-white resize-none
             scrollbar scrollbar-thin scrollbar-thumb-purple-400 scrollbar-track-blue-200 dark:scrollbar-thumb-purple-800 dark:scrollbar-track-blue-400 scrollbar-thumb-rounded-full scrollbar-track-rounded-full shadow-inner"
             placeholder="Type message..."
+            onKeyDown={handleKeyDown}
           />
           <div className="justify-end flex">
             <CustomButton
