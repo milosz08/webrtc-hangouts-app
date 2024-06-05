@@ -4,10 +4,18 @@
  * Part of Silesian University of Technology project.
  * Created only for learning purposes.
  */
+import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 
 const Message = ({ message, isUser, username }) => {
+  const messageWithBreaks = message.split('\n').map((line, index) => (
+    <React.Fragment key={index}>
+      {line}
+      <br />
+    </React.Fragment>
+  ));
+
   return (
     <div
       className={clsx('flex flex-col text-gray-600 dark:text-white', {
@@ -20,7 +28,7 @@ const Message = ({ message, isUser, username }) => {
           'bg-blue-400 text-white': isUser,
           'bg-gray-200 dark:bg-[#1A314E] dark:text-white': !isUser,
         })}>
-        {message}
+        {messageWithBreaks}
       </div>
     </div>
   );
