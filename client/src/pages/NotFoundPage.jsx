@@ -5,7 +5,6 @@
  * Created only for learning purposes.
  */
 import { NavLink } from 'react-router-dom';
-import NotFoundImage from '../assets/404.png';
 import CustomButton from '../components/CustomButton';
 
 const NotFoundPage = () => {
@@ -26,7 +25,7 @@ const NotFoundPage = () => {
             </CustomButton>
           </div>
         </div>
-        <img src={NotFoundImage} className="col-span-2" />
+        <img src="/404.png" className="col-span-2" />
       </div>
     </div>
   );
