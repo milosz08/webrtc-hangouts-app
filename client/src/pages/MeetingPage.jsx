@@ -159,13 +159,13 @@ const MeetingPage = () => {
           {!isChatOpen ? (
             <button
               onClick={toggleChat}
-              className={`absolute bottom-0 left-0 md:top-0 md:right-0 md:bottom-auto md:left-auto rotate-90 md:rotate-0 m-2 text-white z-20  bg-blue-300 dark:bg-blue-700 p-1 rounded rounded-2xl dark:hover:bg-blue-600 hover:bg-blue-200`}>
+              className={`absolute bottom-0 left-0 md:top-0 md:right-0 md:bottom-auto md:left-auto rotate-90 md:rotate-0 m-2 text-white z-20  bg-blue-300 dark:bg-blue-700 p-1 rounded-2xl dark:hover:bg-blue-600 hover:bg-blue-200`}>
               {isChatOpen ? <FaChevronRight /> : <FaChevronLeft />}
             </button>
           ) : null}
           <div
             id="content"
-            className="flex justify-around overflow-x-auto p-2 scrollbar scrollbar-thin scrollbar-thumb-purple-400 scrollbar-track-blue-200 dark:scrollbar-thumb-purple-800 dark:scrollbar-track-blue-400 scrollbar-thumb-rounded-full scrollbar-track-rounded-full shadow-inner">
+            className="flex justify-around overflow-x-auto p-2 scrollbar-thin scrollbar-thumb-purple-400 scrollbar-track-blue-200 dark:scrollbar-thumb-purple-800 dark:scrollbar-track-blue-400 scrollbar-thumb-rounded-full scrollbar-track-rounded-full shadow-inner">
             <div className="inline-flex">
               {cameras.slice(visibleCameras).map((camera, index) => (
                 <div className="w-40 flex-shrink-0 px-1" key={camera}>
@@ -229,9 +229,9 @@ const MeetingPage = () => {
             <button
               onClick={toggleChat}
               className={clsx(
-                'absolute m-3.5 text-white z-20 p-1 rounded rounded-2xl',
+                'absolute m-3.5 text-white z-20 p-1 rounded-2xl',
                 'rotate-90 md:rotate-0',
-                'top-0 left-0 md:top-0 md:left-0 md:bottom-auto md:left-auto',
+                'top-0 left-0 md:top-0 md:bottom-auto md:left-auto',
                 isChatOpen
                   ? 'bg-blue-300 dark:bg-blue-700 hover:bg-blue-200 dark:hover:bg-blue-600'
                   : 'bg-blue-200 dark:bg-blue-600 hover:bg-blue-300 dark:hover:bg-blue-700'
