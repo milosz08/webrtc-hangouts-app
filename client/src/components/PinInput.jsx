@@ -74,7 +74,17 @@ const PinInput = () => {
             key={i}
             type="text"
             className={clsx(
-              'w-12 text-center text-2xl rounded-xl border-xl border-blue-400 dark:border-white dark:text-white text-black dark:bg-dark-pininput',
+              'w-12',
+              'text-center',
+              'text-2xl',
+              'rounded-xl',
+              'border-xl',
+              'border-blue-400',
+              'dark:border-white',
+              'dark:text-white',
+              'text-black',
+              'dark:bg-dark-pininput',
+              'disabled:opacity-50',
               {
                 'opacity-50': isChecking,
               }
@@ -91,8 +101,21 @@ const PinInput = () => {
       {isChecking && (
         <div className="mt-8">
           <div
-            className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-e-transparent
-          align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white"
+            className={clsx(
+              'inline-block',
+              'h-8',
+              'w-8',
+              'animate-spin',
+              'rounded-full',
+              'border-4',
+              'border-solid',
+              'border-current',
+              'border-e-transparent',
+              'align-[-0.125em]',
+              'text-surface',
+              'motion-reduce:animate-[spin_1.5s_linear_infinite]',
+              'dark:text-white'
+            )}
             role="status"></div>
         </div>
       )}

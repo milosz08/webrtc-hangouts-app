@@ -159,13 +159,43 @@ const MeetingPage = () => {
           {!isChatOpen ? (
             <button
               onClick={toggleChat}
-              className={`absolute bottom-0 left-0 md:top-0 md:right-0 md:bottom-auto md:left-auto rotate-90 md:rotate-0 m-2 text-white z-20  bg-blue-300 dark:bg-blue-700 p-1 rounded-2xl dark:hover:bg-blue-600 hover:bg-blue-200`}>
+              className={clsx(
+                'absolute',
+                'bottom-0',
+                'left-0',
+                'md:top-0',
+                'md:right-0',
+                'md:bottom-auto',
+                'md:left-auto',
+                'rotate-90',
+                'md:rotate-0 m-2',
+                'text-white z-20',
+                'bg-blue-300',
+                'dark:bg-blue-700',
+                'p-1',
+                'rounded-2xl',
+                'dark:hover:bg-blue-600',
+                'hover:bg-blue-200'
+              )}>
               {isChatOpen ? <FaChevronRight /> : <FaChevronLeft />}
             </button>
           ) : null}
           <div
             id="content"
-            className="flex justify-around overflow-x-auto p-2 scrollbar-thin scrollbar-thumb-purple-400 scrollbar-track-blue-200 dark:scrollbar-thumb-purple-800 dark:scrollbar-track-blue-400 scrollbar-thumb-rounded-full scrollbar-track-rounded-full shadow-inner">
+            className={clsx(
+              'flex',
+              'justify-around',
+              'overflow-x-auto',
+              'p-2',
+              'scrollbar-thin',
+              'scrollbar-thumb-purple-400',
+              'scrollbar-track-blue-200',
+              'dark:scrollbar-thumb-purple-800',
+              'dark:scrollbar-track-blue-400',
+              'scrollbar-thumb-rounded-full',
+              'scrollbar-track-rounded-full',
+              'shadow-inner'
+            )}>
             <div className="inline-flex">
               {cameras.slice(visibleCameras).map((camera, index) => (
                 <div className="w-40 flex-shrink-0 px-1" key={camera}>

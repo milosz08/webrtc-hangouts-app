@@ -5,6 +5,7 @@
  * Created only for learning purposes.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
+import clsx from 'clsx';
 import { useSnackbar } from 'notistack';
 import { UniqueOTP } from 'unique-string-generator';
 import { useAppContext } from '../context/AppContextProvider';
@@ -116,8 +117,29 @@ const Chat = () => {
   };
 
   return (
-    <div className="h-full bg-gradient-to-b from-custom-blue via-custom-purple to-custom-blue dark:from-dark-blue dark:via-dark-purple dark:to-dark-blue border-l-2 dark:border-gray-600">
-      <div className="w-full h-[55px] border-custom-purple dark:border-gray-600 border-b-2 bg-blue-200 dark:bg-dark-bg flex justify-end p-2">
+    <div
+      className={clsx(
+        'h-full',
+        'bg-gradient-to-b',
+        'from-custom-blue',
+        'via-custom-purple',
+        'to-custom-blue',
+        'dark:from-dark-blue',
+        'dark:via-dark-purple',
+        'dark:to-dark-blue border-l-2',
+        'dark:border-gray-600'
+      )}>
+      <div
+        className={clsx(
+          'w-full',
+          'h-[55px]',
+          'border-custom-purple',
+          'dark:border-gray-600 border-b-2',
+          'bg-blue-200',
+          'dark:bg-dark-bg flex',
+          'justify-end',
+          'p-2'
+        )}>
         {state.isHost ? (
           <CustomButton
             tagOrComponent="button"
@@ -130,8 +152,21 @@ const Chat = () => {
       </div>
       <div
         ref={chatBoxContainer}
-        className="py-4 h-[calc(100vh-(66px+55px+134px))] flex flex-col-reverse overflow-y-auto 
-        scrollbar-thin scrollbar-thumb-purple-400 scrollbar-track-blue-200 dark:scrollbar-thumb-purple-800 dark:scrollbar-track-blue-400 scrollbar-thumb-rounded-full scrollbar-track-rounded-full shadow-inner">
+        className={clsx(
+          'py-4',
+          'h-[calc(100vh-(66px+55px+134px))]',
+          'flex',
+          'flex-col-reverse',
+          'overflow-y-auto',
+          'scrollbar-thin',
+          'scrollbar-thumb-purple-400',
+          'scrollbar-track-blue-200',
+          'dark:scrollbar-thumb-purple-800',
+          'dark:scrollbar-track-blue-400',
+          'scrollbar-thumb-rounded-full',
+          'scrollbar-track-rounded-full',
+          'shadow-inner'
+        )}>
         {messages.map(({ userSocket, userNickname, message }) => (
           <Message
             key={`${socket.id}-${userNickname}-${UniqueOTP(10)}`}
@@ -145,8 +180,25 @@ const Chat = () => {
         <div className="flex flex-col gap-2">
           <textarea
             ref={messageField}
-            className="flex-grow rounded-md border-2 dark:border-gray-600 p-2 bg-gray-200 dark:bg-dark-textarea dark:text-white resize-none
-            scrollbar-thin scrollbar-thumb-purple-400 scrollbar-track-blue-200 dark:scrollbar-thumb-purple-800 dark:scrollbar-track-blue-400 scrollbar-thumb-rounded-full scrollbar-track-rounded-full shadow-inner"
+            className={clsx(
+              'flex-grow',
+              'bg-gray-200',
+              'dark:bg-dark-textarea',
+              'dark:text-white',
+              'resize-none',
+              'rounded-md',
+              'border-2',
+              'dark:border-gray-600',
+              'p-2',
+              'scrollbar-thin',
+              'scrollbar-thumb-purple-400',
+              'scrollbar-track-blue-200',
+              'dark:scrollbar-thumb-purple-800',
+              'dark:scrollbar-track-blue-400',
+              'scrollbar-thumb-rounded-full',
+              'scrollbar-track-rounded-full',
+              'shadow-inner'
+            )}
             placeholder="Type message..."
             onKeyDown={handleKeyDown}
           />
