@@ -54,7 +54,6 @@ const Chat = () => {
       const modifiedMessages = [newMessages, ...messages];
       setMessages(modifiedMessages);
       messageField.current.value = '';
-      chatBoxContainer.scrollTo(0, chatBoxContainer.scrollHeight);
     },
     [messages]
   );
