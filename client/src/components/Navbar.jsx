@@ -7,10 +7,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { useSnackbar } from 'notistack';
+import { useLocation } from 'react-router';
 import { useOnClickOutside } from 'usehooks-ts';
 import { actionType, useAppContext } from '../context/AppContextProvider';
 import { useSocket } from '../context/SocketProvider';
 import DarkModeToggleButton from './DarkModeToggleButton';
+import MeetingTimer from './MeetingTimer';
 import NicknameDropdown from './NicknameDropdown';
 
 const Navbar = () => {
@@ -19,6 +21,7 @@ const Navbar = () => {
   const { state, dispatch } = useAppContext();
   const socket = useSocket();
   const { enqueueSnackbar } = useSnackbar();
+  const location = useLocation();
 
   useOnClickOutside(dropdownRef, () => setIsOpen(false));
 
@@ -81,6 +84,7 @@ const Navbar = () => {
       )}>
       <div className="max-w-screen-xl flex justify-between items-center p-3 px-8 mx-auto">
         <DarkModeToggleButton />
+        {location.pathname.includes('meeting') && <MeetingTimer />}
         <div className="relative inline-block text-left" ref={dropdownRef}>
           <span
             className={clsx(
