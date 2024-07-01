@@ -10,6 +10,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import SuspenseLoader from '../components/SuspenseLoader';
 import AppContextProvider from '../context/AppContextProvider';
+import PeerProvider from '../context/PeerProvider';
 import SocketProvider from '../context/SocketProvider';
 import AppRouter from './AppRouter';
 
@@ -18,12 +19,14 @@ const Entrypoint = () => (
     <SnackbarProvider>
       <AppContextProvider>
         <SocketProvider>
-          <BrowserRouter>
-            <div className="flex-col flex min-h-screen">
-              <Navbar />
-              <AppRouter />
-            </div>
-          </BrowserRouter>
+          <PeerProvider>
+            <BrowserRouter>
+              <div className="flex-col flex min-h-screen">
+                <Navbar />
+                <AppRouter />
+              </div>
+            </BrowserRouter>
+          </PeerProvider>
         </SocketProvider>
       </AppContextProvider>
     </SnackbarProvider>

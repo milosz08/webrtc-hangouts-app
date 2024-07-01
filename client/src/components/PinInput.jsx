@@ -9,6 +9,7 @@ import clsx from 'clsx';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
 import { actionType, useAppContext } from '../context/AppContextProvider';
+import { usePeer } from '../context/PeerProvider';
 import { useSocket } from '../context/SocketProvider';
 import usePinHandler from '../hooks/usePinHandler';
 
@@ -18,6 +19,7 @@ const PinInput = () => {
   const navigate = useNavigate();
   const { state, dispatch } = useAppContext();
   const { enqueueSnackbar } = useSnackbar();
+  const { createPeerConnection } = usePeer();
 
   const updatePin = (newPin, i) => {
     setPin(newPin);
@@ -25,11 +27,22 @@ const PinInput = () => {
       refs[i + 1].current.focus();
     } else {
       if (newPin.every(digit => digit !== '')) {
-        socket.emit('room:join', {
-          nickname: state.nickname,
-          code: newPin.join(''),
-        });
         setIsChecking(true);
+        createPeerConnection(
+          peerId => {
+            socket.emit('room:join', {
+              nickname: state.nickname,
+              code: newPin.join(''),
+              peerId,
+              isVideoOn: state.isVideoOn,
+              isAudioOn: state.isAudioOn,
+            });
+          },
+          () => {
+            setIsChecking(false);
+            setPin(Array(8).fill(''));
+          }
+        );
       }
     }
   };
@@ -94,7 +107,10 @@ const PinInput = () => {
             value={digit}
             onChange={e => handleChange(e.target.value, i)}
             onKeyDown={e => handleKeyDown(e, i)}
-            disabled={isChecking}
+            disabled={
+              isChecking ||
+              (!state.selectedVideoDevice.id && !state.selectedAudioDevice.id)
+            }
           />
         ))}
       </div>
