@@ -55,7 +55,7 @@ const CameraWindow = ({
                 ref={videoRef}
                 autoPlay
                 playsInline
-                className="w=full h-full"
+                className="w=full h-full mx-auto"
                 muted={!isAudioOn}></video>
             )}
             <div
