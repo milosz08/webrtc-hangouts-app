@@ -3,7 +3,7 @@
  * Part of Silesian University of Technology project.
  * Created only for learning purposes.
  */
-const { rooms, messages } = require('../state');
+const { rooms, messages, timers } = require('../state');
 const logger = require('../logger');
 const { io } = require('../socket');
 
@@ -27,9 +27,6 @@ const reassignedRoomHost = (room, participantSocketId) => {
     logger.info(
       `Change room host from ${previousHost.nickname} to ${room.host.nickname}.`
     );
-    io.to(room.roomId).emit('room:reassigned-host', {
-      message: `Host leave meeting. ${room.host.nickname} are the host now.`,
-    });
     reassigned = true;
   }
   return { participant, reassigned };
@@ -37,6 +34,12 @@ const reassignedRoomHost = (room, participantSocketId) => {
 
 const deleteSelectedRoom = (room, roomKey) => {
   if (room.participants.length === 0) {
+    const timer = timers.get(room.roomId);
+    if (timer) {
+      timer.stop();
+      timer.reset();
+      timers.delete(room.roomId);
+    }
     logger.info(
       `No participants in room with id: ${room.roomId}. Deleting room.`
     );
@@ -55,10 +58,11 @@ module.exports = {
     const room = rooms.get(roomKey);
     if (room) {
       const { roomId, participants } = room;
-      const { participant, reassigned } = reassignedRoomHost(
-        room,
-        userSocketId
-      );
+      const reassignedRoomHostData = reassignedRoomHost(room, userSocketId);
+      if (!reassignedRoomHostData) {
+        return;
+      }
+      const { participant, reassigned } = reassignedRoomHostData;
       room.participants = participants.filter(
         ({ socketId }) => socketId !== userSocketId
       );
@@ -66,14 +70,13 @@ module.exports = {
       if (isRoomDeleted) {
         return;
       }
-      if (!reassigned) {
-        io.to(roomId).emit('room:participant-leaved', {
-          message: `User ${participant.nickname} has leaved the room.`,
-        });
-      }
-      io.to(roomId).emit('room:participants', {
-        participants: room.participants,
-        host: room.host,
+      io.to(roomId).emit('room:participant-leaved', {
+        message: reassigned
+          ? `Host leave meeting. ${room.host.nickname} are the host now.`
+          : `User ${participant.nickname} has leaved the room.`,
+        participant,
+        reassigned,
+        newHost: room.host,
       });
     }
   },
@@ -95,16 +98,27 @@ module.exports = {
       deleteSelectedRoom(room, key);
     });
     if (foundClientSocketRoom && disconnectedParticipant) {
-      const { roomId, participants, host } = foundClientSocketRoom;
-      if (!reassignedHost) {
-        io.to(roomId).emit('room:participant-leaved', {
-          message: `User ${disconnectedParticipant.nickname} has leaved the room.`,
-        });
-      }
-      io.to(roomId).emit('room:participants', {
-        participants,
-        host,
-        message: `Participant ${disconnectedParticipant} was disconnected`,
+      const { roomId, host } = foundClientSocketRoom;
+      io.to(roomId).emit('room:participant-leaved', {
+        message: reassignedHost
+          ? `Host leave meeting. ${host.nickname} are the host now.`
+          : `User ${disconnectedParticipant.nickname} has leaved the room.`,
+        participant: disconnectedParticipant,
+        reassigned: reassignedHost,
+        newHost: host,
+      });
+    }
+  },
+  onCloseRoom: function ({ roomKey, invokeBy }) {
+    const room = rooms.get(roomKey);
+    if (room) {
+      rooms.delete(roomKey);
+      messages.delete(room.roomId);
+      logger.info(
+        `Successfully deleted room: ${room.roomId}. Invoked by: ${invokeBy}`
+      );
+      io.to(room.roomId).emit('room:deleted', {
+        message: `Session ended.`,
       });
     }
   },
