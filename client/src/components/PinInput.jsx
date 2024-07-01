@@ -9,6 +9,7 @@ import clsx from 'clsx';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
 import { actionType, useAppContext } from '../context/AppContextProvider';
+import { usePeer } from '../context/PeerProvider';
 import { useSocket } from '../context/SocketProvider';
 import usePinHandler from '../hooks/usePinHandler';
 
@@ -18,6 +19,7 @@ const PinInput = () => {
   const navigate = useNavigate();
   const { state, dispatch } = useAppContext();
   const { enqueueSnackbar } = useSnackbar();
+  const { createPeerConnection } = usePeer();
 
   const updatePin = (newPin, i) => {
     setPin(newPin);
@@ -25,11 +27,22 @@ const PinInput = () => {
       refs[i + 1].current.focus();
     } else {
       if (newPin.every(digit => digit !== '')) {
-        socket.emit('room:join', {
-          nickname: state.nickname,
-          code: newPin.join(''),
-        });
         setIsChecking(true);
+        createPeerConnection(
+          peerId => {
+            socket.emit('room:join', {
+              nickname: state.nickname,
+              code: newPin.join(''),
+              peerId,
+              isVideoOn: state.isVideoOn,
+              isAudioOn: state.isAudioOn,
+            });
+          },
+          () => {
+            setIsChecking(false);
+            setPin(Array(8).fill(''));
+          }
+        );
       }
     }
   };
@@ -74,7 +87,17 @@ const PinInput = () => {
             key={i}
             type="text"
             className={clsx(
-              'w-12 text-center text-2xl rounded-xl border-xl border-blue-400 dark:border-white dark:text-white text-black dark:bg-dark-pininput',
+              'w-12',
+              'text-center',
+              'text-2xl',
+              'rounded-xl',
+              'border-xl',
+              'border-blue-400',
+              'dark:border-white',
+              'dark:text-white',
+              'text-black',
+              'dark:bg-dark-pininput',
+              'disabled:opacity-50',
               {
                 'opacity-50': isChecking,
               }
@@ -84,15 +107,31 @@ const PinInput = () => {
             value={digit}
             onChange={e => handleChange(e.target.value, i)}
             onKeyDown={e => handleKeyDown(e, i)}
-            disabled={isChecking}
+            disabled={
+              isChecking ||
+              (!state.selectedVideoDevice.id && !state.selectedAudioDevice.id)
+            }
           />
         ))}
       </div>
       {isChecking && (
         <div className="mt-8">
           <div
-            className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-e-transparent
-          align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white"
+            className={clsx(
+              'inline-block',
+              'h-8',
+              'w-8',
+              'animate-spin',
+              'rounded-full',
+              'border-4',
+              'border-solid',
+              'border-current',
+              'border-e-transparent',
+              'align-[-0.125em]',
+              'text-surface',
+              'motion-reduce:animate-[spin_1.5s_linear_infinite]',
+              'dark:text-white'
+            )}
             role="status"></div>
         </div>
       )}

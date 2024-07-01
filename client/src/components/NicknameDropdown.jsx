@@ -5,12 +5,13 @@
  * Created only for learning purposes.
  */
 import { useState } from 'react';
+import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { useAppContext } from '../context/AppContextProvider';
 import { generateDefaultNickname } from '../utils/nicknameUtils';
 import CustomButton from './CustomButton';
 
-const NicknameDropdown = ({ nicknameInput, handleSave }) => {
+const NicknameDropdown = ({ handleSave }) => {
   const { state } = useAppContext();
   const [tempNickname, setTempNickname] = useState(state.nickname);
 
@@ -26,8 +27,20 @@ const NicknameDropdown = ({ nicknameInput, handleSave }) => {
 
   return (
     <div
-      className="absolute right-0 transform mt-2 w-56 rounded-md shadow-lg bg-gray-200 dark:bg-dark-dropdown
-      ring-1 ring-black ring-opacity-5 z-30">
+      className={clsx(
+        'absolute',
+        'right-0',
+        'transform',
+        'mt-2',
+        'w-56',
+        'rounded-md shadow-lg',
+        'bg-gray-200',
+        'dark:bg-dark-dropdown',
+        'ring-1',
+        'ring-black',
+        'ring-opacity-5',
+        'z-30'
+      )}>
       <div className="p-2">
         <label
           htmlFor="default-input"
@@ -36,14 +49,29 @@ const NicknameDropdown = ({ nicknameInput, handleSave }) => {
         </label>
         <input
           type="text"
-          ref={nicknameInput}
           value={tempNickname}
           onChange={e => setTempNickname(e.target.value)}
           maxLength={30}
           onKeyDown={handleKeyDown}
-          className="bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full
-          p-2.5 dark:bg-dark-textarea dark:border-white border-xl border-blue-400 dark:placeholder-gray-400 dark:text-white
-          dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className={clsx(
+            'bg-gray-50',
+            'border',
+            'text-gray-900',
+            'text-sm',
+            'rounded-lg',
+            'focus:ring-blue-500',
+            'focus:border-blue-500',
+            'block',
+            'w-full',
+            'p-2.5',
+            'dark:bg-dark-textarea',
+            'dark:border-white border-xl',
+            'border-blue-400',
+            'dark:placeholder-gray-400',
+            'dark:text-white',
+            'dark:focus:ring-blue-500',
+            'dark:focus:border-blue-500'
+          )}
         />
         <div className="my-2">
           <CustomButton
@@ -66,7 +94,6 @@ const NicknameDropdown = ({ nicknameInput, handleSave }) => {
 };
 
 NicknameDropdown.propTypes = {
-  nicknameInput: PropTypes.any.isRequired,
   handleSave: PropTypes.func.isRequired,
 };
 

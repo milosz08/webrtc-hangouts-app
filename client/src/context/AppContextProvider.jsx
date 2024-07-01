@@ -14,12 +14,34 @@ export const actionType = {
   setNickname: 'setNickname',
   setRoomKey: 'setRoomKey',
   setIsHost: 'setIsHost',
+  selectVideoDevice: 'selectVideoDevice',
+  selectAudioDevice: 'selectAudioDevice',
+  toggleVideo: 'toggleVideo',
+  toggleAudio: 'toggleAudio',
+  leaveSession: 'leaveSession',
+  setDevicesInitState: 'setDevicesInitState',
+  setAudioDeviceInitState: 'setAudioDeviceInitState',
+  setVideoDeviceInitState: 'setVideoDeviceInitState',
+};
+
+const defaultVideoSelect = {
+  name: 'Not selected (video input)',
+  id: '',
+};
+
+const defaultAudioSelect = {
+  name: 'Not selected (audio input)',
+  id: '',
 };
 
 const initState = {
   nickname: '',
   roomKey: '',
   isHost: false,
+  selectedVideoDevice: defaultVideoSelect,
+  selectedAudioDevice: defaultAudioSelect,
+  isVideoOn: false,
+  isAudioOn: false,
 };
 
 const reducer = (state, { type, value }) => {
@@ -38,6 +60,52 @@ const reducer = (state, { type, value }) => {
       return {
         ...state,
         isHost: value,
+      };
+    case actionType.selectVideoDevice:
+      return {
+        ...state,
+        selectedVideoDevice: value,
+      };
+    case actionType.selectAudioDevice:
+      return {
+        ...state,
+        selectedAudioDevice: value,
+      };
+    case actionType.toggleVideo:
+      return {
+        ...state,
+        isVideoOn: value,
+      };
+    case actionType.toggleAudio:
+      return {
+        ...state,
+        isAudioOn: value,
+      };
+    case actionType.setDevicesInitState:
+      return {
+        ...state,
+        isVideoOn: false,
+        isAudioOn: false,
+        selectedVideoDevice: defaultVideoSelect,
+        selectedAudioDevice: defaultAudioSelect,
+      };
+    case actionType.setAudioDeviceInitState:
+      return {
+        ...state,
+        isAudioOn: false,
+        selectedAudioDevice: defaultAudioSelect,
+      };
+    case actionType.setVideoDeviceInitState:
+      return {
+        ...state,
+        isVideoOn: false,
+        selectedVideoDevice: defaultVideoSelect,
+      };
+    case actionType.leaveSession:
+      return {
+        ...state,
+        roomKey: '',
+        isHost: false,
       };
     default:
       throw new Error(`Unknown action type: ${state}`);

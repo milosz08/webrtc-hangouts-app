@@ -5,11 +5,14 @@
  * Created only for learning purposes.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
+import clsx from 'clsx';
 import { useSnackbar } from 'notistack';
+import { useLocation } from 'react-router';
 import { useOnClickOutside } from 'usehooks-ts';
 import { actionType, useAppContext } from '../context/AppContextProvider';
 import { useSocket } from '../context/SocketProvider';
 import DarkModeToggleButton from './DarkModeToggleButton';
+import MeetingTimer from './MeetingTimer';
 import NicknameDropdown from './NicknameDropdown';
 
 const Navbar = () => {
@@ -18,6 +21,7 @@ const Navbar = () => {
   const { state, dispatch } = useAppContext();
   const socket = useSocket();
   const { enqueueSnackbar } = useSnackbar();
+  const location = useLocation();
 
   useOnClickOutside(dropdownRef, () => setIsOpen(false));
 
@@ -66,14 +70,39 @@ const Navbar = () => {
 
   return (
     <nav
-      className="bg-gradient-to-r from-custom-blue via-custom-purple to-custom-blue dark:from-dark-blue dark:via-dark-purple-nav 
-                dark:to-dark-blue border-b-2 border-border-color dark:border-dark-border">
+      className={clsx(
+        'bg-gradient-to-r',
+        'from-custom-blue',
+        'via-custom-purple',
+        'to-custom-blue',
+        'dark:from-dark-blue',
+        'dark:via-dark-purple-nav',
+        'dark:to-dark-blue',
+        'border-b-2',
+        'border-border-color',
+        'dark:border-dark-border'
+      )}>
       <div className="max-w-screen-xl flex justify-between items-center p-3 px-8 mx-auto">
         <DarkModeToggleButton />
+        {location.pathname.includes('meeting') && <MeetingTimer />}
         <div className="relative inline-block text-left" ref={dropdownRef}>
           <span
-            className="relative text-gray-600 dark:text-white tracking-wide cursor-pointer after:absolute after:bg-gray-700 
-            after:h-[3px] after:w-0 after:left-0 after:bottom-[-5px] after:transition-[0.3s] dark:after:bg-white hover:after:w-full"
+            className={clsx(
+              'relative',
+              'text-gray-600',
+              'dark:text-white',
+              'tracking-wide',
+              'cursor-pointer',
+              'after:absolute',
+              'after:bg-gray-700',
+              'after:h-[3px]',
+              'after:w-0',
+              'after:left-0',
+              'after:bottom-[-5px]',
+              'after:transition-[0.3s]',
+              'dark:after:bg-white',
+              'hover:after:w-full'
+            )}
             onClick={() => setIsOpen(prev => !prev)}>
             {state.nickname}
           </span>
