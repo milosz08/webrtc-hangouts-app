@@ -38,4 +38,7 @@ jobs:
           touch /var/www/webrtc-video-hangouts-api/.env
           echo "${{ secrets.PROD_ENV_FILE }}" > /var/www/webrtc-video-hangouts-api/.env
 
-      - run: pm2 restart WebrtcAPI
+      - name: Restart process
+        run: |
+          pm2 restart ecosystem.config.js --only ${{ vars.PM2_APP_NAME }}
+          pm2 save
