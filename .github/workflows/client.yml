@@ -1,4 +1,4 @@
-name: Client workflow
+name: Build and deploy client
 
 on:
   push:
@@ -8,29 +8,58 @@ on:
       - "package.json"
       - "client/**"
 
+env:
+  SUBPROJECT_ROOT: "client"
+
 jobs:
   build:
-    runs-on: self-hosted
-
-    strategy:
-      matrix:
-        node-version: [20.x]
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: "20.x"
 
       - name: Install Yarn
         run: npm install -g yarn
 
-      - name: Build
-        run: |
-          yarn install
-          cd client && yarn run build
+      - name: Install dependencies
+        run: cd ${{ env.SUBPROJECT_ROOT }} && yarn install --frozen-lockfile
 
-      - name: Deploy
-        run: cp -r client/dist/* /var/www/webrtc-video-hangouts-client/
+      - name: Build
+        run: cd ${{ env.SUBPROJECT_ROOT }} && yarn run build
+
+      - name: Upload generated dist files
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-output
+          path: ${{ env.SUBPROJECT_ROOT }}/dist/
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    env:
+      SERVER_OUTPUT: "/var/www/webrtc-video-hangouts-client"
+
+    steps:
+      - name: Download generated dist files
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-output
+          path: dist
+
+      - name: Move files to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          source: "dist/*"
+          target: ${{ env.SERVER_OUTPUT }}
+          rm: true
