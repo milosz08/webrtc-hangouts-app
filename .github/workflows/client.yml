@@ -63,3 +63,4 @@ jobs:
           source: "dist/*"
           target: ${{ env.SERVER_OUTPUT }}
           rm: true
+          strip_components: 1
