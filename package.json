@@ -38,5 +38,9 @@
     "lint-staged": "^15.2.10",
     "prettier": "^3.3.3",
     "prettier-eslint": "^16.3.0"
+  },
+  "resolutions": {
+    "cross-spawn": "^7.0.5",
+    "path-to-regexp": "^0.1.12"
   }
 }
